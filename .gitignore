@@ -5,4 +5,5 @@
 dependency-reduced-pom.xml
 log/
 target/
-javadocs/
+OpenSectorLinker/javadocs/
+OpenSectorSystem/javadocs/
