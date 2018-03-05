@@ -1,6 +1,6 @@
 package pl.socketbyte.opensectors.system;
 
-import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -35,7 +35,7 @@ public class EventAdapter implements Listener {
 
         ProxiedPlayer sender = (ProxiedPlayer) event.getSender();
 
-        for (ProxiedPlayer proxiedPlayer : BungeeCord.getInstance().getPlayers())
+        for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers())
             proxiedPlayer.sendMessage(new TextComponent(Util.fixColors("&7" + sender.getName() + "&8: &f" +
                     event.getMessage())));
     }

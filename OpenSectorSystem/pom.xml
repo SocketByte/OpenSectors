@@ -101,9 +101,9 @@
             <version>2.8.2</version>
         </dependency>
         <dependency>
-            <groupId>bungeecord</groupId>
-            <artifactId>bungeecord</artifactId>
-            <version>1.0</version>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+            <version>1.12-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
