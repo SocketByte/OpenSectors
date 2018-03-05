@@ -1,6 +1,6 @@
 package pl.socketbyte.opensectors.system.util;
 
-import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import pl.socketbyte.opensectors.system.OpenSectorSystem;
 
@@ -14,7 +14,7 @@ public class ServerManager {
     }
 
     public static ServerInfo getServerInfo(int serverId) {
-        return BungeeCord.getInstance().getServerInfo(
+        return ProxyServer.getInstance().getServerInfo(
                 Objects.requireNonNull(OpenSectorSystem.getServerController(serverId)).name);
     }
 

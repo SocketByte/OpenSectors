@@ -1,6 +1,6 @@
 package pl.socketbyte.opensectors.system.logging;
 
-import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import pl.socketbyte.opensectors.system.OpenSectorSystem;
 
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class StackTraceHandler {
 
         switch (severity) {
             case FATAL:
-                BungeeCord.getInstance().stop("A fatal error occured in OpenSectorSystem. (" + e.getMessage() + ")");
+                ProxyServer.getInstance().stop("A fatal error occured in OpenSectorSystem. (" + e.getMessage() + ")");
                 break;
             case WARNING:
                 OpenSectorSystem.getInstance().close();

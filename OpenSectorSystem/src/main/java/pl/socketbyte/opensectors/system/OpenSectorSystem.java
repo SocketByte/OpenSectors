@@ -3,7 +3,7 @@ package pl.socketbyte.opensectors.system;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import pl.socketbyte.opensectors.system.api.IPacketAdapter;
 import pl.socketbyte.opensectors.system.cryptography.Cryptography;
@@ -125,7 +125,7 @@ public class OpenSectorSystem extends Plugin {
         server.addListener(new ServerAdapter());
 
         logger.info("Registering event adapter...");
-        BungeeCord.getInstance().getPluginManager()
+        ProxyServer.getInstance().getPluginManager()
                 .registerListener(this, new EventAdapter());
 
         logger.info("Running schedulers...");
@@ -141,7 +141,7 @@ public class OpenSectorSystem extends Plugin {
         this.onDisable();
         for (Handler handler : getLogger().getHandlers())
             handler.close();
-        BungeeCord.getInstance().getScheduler().cancel(this);
+        ProxyServer.getInstance().getScheduler().cancel(this);
         getExecutorService().shutdownNow();
     }
 
