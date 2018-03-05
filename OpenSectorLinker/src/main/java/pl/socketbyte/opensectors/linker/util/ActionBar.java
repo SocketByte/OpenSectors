@@ -10,6 +10,9 @@ import pl.socketbyte.opensectors.linker.Linker;
 
 public class ActionBar {
 
+    // Totally forgot about these
+    // Reflection version coming soon xD sorry xD 
+
     public static void send(Player player, String text) {
         PacketPlayOutChat packet = new PacketPlayOutChat(
                 IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', text) + "\"}"), (byte) 2);
