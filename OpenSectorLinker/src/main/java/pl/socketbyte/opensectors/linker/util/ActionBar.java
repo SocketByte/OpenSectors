@@ -8,7 +8,7 @@ import pl.socketbyte.opensectors.linker.Linker;
 public class ActionBar {
 
     public static void send(Player player, String text) {
-        new io.github.theluca98.textapi.ActionBar(text).send(player);
+        new io.github.theluca98.textapi.ActionBar(Util.fixColors(text)).send(player);
     }
 
     public static void send(Player player, String text, int seconds) {

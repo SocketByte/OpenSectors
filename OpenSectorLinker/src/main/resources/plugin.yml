@@ -1,4 +1,4 @@
 name: OpenSectorLinker
-version: 0.0.12a
+version: 1.0
 main: pl.socketbyte.opensectors.linker.Linker
 author: SocketByte
