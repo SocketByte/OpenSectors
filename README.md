@@ -401,7 +401,7 @@ Either helping with code, or supporting the project with donation.
 
 You can donate here:
 
-![https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H5N9GMVH464Y8](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=H5N9GMVH464Y8)
 
 You will be mentioned in the `README.md` file as soon as you donate something. (Every donation really appreciated)
 
