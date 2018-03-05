@@ -406,4 +406,5 @@ You can donate here:
 You will be mentioned in the `README.md` file as soon as you donate something. (Every donation really appreciated)
 
 ## License
-Project is licensed under `MIT License`.
+Project is licensed under `Creative Commons License (CC BY-NC 3.0)` as you're
+not permitted to use open-source version of this project in commercial applications.
