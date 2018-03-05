@@ -12,14 +12,18 @@
     <packaging>jar</packaging>
     <artifactId>OpenSectorLinker</artifactId>
 
+    <repositories>
+        <repository>
+            <id>Spigot Repository</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>textapi-repo</id>
+            <url>https://dl.bintray.com/luca98/plugins/</url>
+        </repository>
+    </repositories>
+
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-http</artifactId>
-                <version>2.8</version>
-            </extension>
-        </extensions>
         <plugins>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
@@ -74,8 +78,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <version>1.12.1-R0.1-SNAPSHOT</version>
+            <type>jar</type>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.theluca98</groupId>
+            <artifactId>TextAPI</artifactId>
+            <version>1.12.2-R2.2</version>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware</groupId>
