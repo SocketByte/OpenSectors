@@ -1,0 +1,4 @@
+name: OpenSectorSystem
+version: 0.0.12a
+main: pl.socketbyte.opensectors.OpenSectorSystem
+author: SocketByte
