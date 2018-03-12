@@ -238,7 +238,7 @@ Add this code to your maven dependencies.
 ```xml
     <repositories>
         <repository>
-            <id>opengui</id>
+            <id>socketbyte-repo</id>
             <url>http://repo.socketbyte.pl/repository/nexus-releases</url>
         </repository>
     </repositories>
@@ -258,7 +258,7 @@ or this code when you make plugin for system:
 ```xml
     <repositories>
         <repository>
-            <id>opengui</id>
+            <id>socketbyte-repo</id>
             <url>http://repo.socketbyte.pl/repository/nexus-releases</url>
         </repository>
     </repositories>
