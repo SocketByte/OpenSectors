@@ -23,6 +23,19 @@ public class StackTraceHandler {
         System.out.println("[------------- End of error -------------]");
     }
 
+    public static void handle(Class<?> clazz, String message) {
+        System.out.println("[------------- Error occured :( -------------]");
+        System.out.println("Error occured when executing class `" + clazz.getSimpleName() + "`!");
+        System.out.println();
+        System.out.println("  Error message: " + (message == null
+                ? "Unfortunately, the infamous null pointer exception occured."
+                : message));
+        System.out.println("  Error class: " + clazz.getName() + " (@i: " + Arrays.toString(clazz.getAnnotations()) + ")");
+        System.out.println();
+        System.out.println("OpenSectorLinker version: " + OpenSectorLinker.VERSION);
+        System.out.println("[------------- End of error -------------]");
+    }
+
     public static void handle(Class<?> clazz, Exception e, StackTraceSeverity severity) {
         handle(clazz, e);
 

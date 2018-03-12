@@ -3,17 +3,14 @@ package pl.socketbyte.opensectors.system;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
-import com.zaxxer.hikari.HikariDataSource;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import pl.socketbyte.opensectors.system.api.IPacketAdapter;
 import pl.socketbyte.opensectors.system.cryptography.Cryptography;
 import pl.socketbyte.opensectors.system.database.HikariManager;
-import pl.socketbyte.opensectors.system.database.HikariRunnable;
-import pl.socketbyte.opensectors.system.database.HikariTableWork;
-import pl.socketbyte.opensectors.system.database.HikariWrapper;
 import pl.socketbyte.opensectors.system.database.basic.HikariMySQL;
-import pl.socketbyte.opensectors.system.functionality.BukkitTimeCalculator;
+import pl.socketbyte.opensectors.system.packet.serializable.Weather;
+import pl.socketbyte.opensectors.system.synchronizers.BukkitTimeSynchronizer;
 import pl.socketbyte.opensectors.system.json.JSONConfig;
 import pl.socketbyte.opensectors.system.json.JSONManager;
 import pl.socketbyte.opensectors.system.json.controllers.SQLController;
@@ -24,10 +21,10 @@ import pl.socketbyte.opensectors.system.logging.StackTraceSeverity;
 import pl.socketbyte.opensectors.system.packet.*;
 import pl.socketbyte.opensectors.system.packet.serializable.SerializablePotionEffect;
 import pl.socketbyte.opensectors.system.packet.serializable.SerializableResultSet;
+import pl.socketbyte.opensectors.system.synchronizers.BukkitWeatherSynchronizer;
 import pl.socketbyte.opensectors.system.util.ExecutorScheduler;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -111,6 +108,13 @@ public class OpenSectorSystem extends Plugin {
                 } catch (SQLException e) {
                     StackTraceHandler.handle(Database.class, e, StackTraceSeverity.ERROR);
                 }
+                finally {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             });
 
             HikariManager.INSTANCE.connect();
@@ -154,6 +158,8 @@ public class OpenSectorSystem extends Plugin {
         kryo.register(PacketQuery.class);
         kryo.register(PacketQueryExecute.class);
         kryo.register(PacketUpdatePlayerSession.class);
+        kryo.register(Weather.class);
+        kryo.register(PacketWeatherInfo.class);
 
         logger.info("Registering server adapter...");
         server.addListener(new ServerAdapter());
@@ -163,12 +169,14 @@ public class OpenSectorSystem extends Plugin {
                 .registerListener(this, new EventAdapter());
 
         logger.info("Running schedulers...");
-        ExecutorScheduler.runScheduler(new BukkitTimeCalculator(), getConfig().bukkitTimeFrequency);
+        ExecutorScheduler.runScheduler(new BukkitTimeSynchronizer(), getConfig().bukkitTimeFrequency);
+        ExecutorScheduler.runScheduler(new BukkitWeatherSynchronizer(), getConfig().bukkitTimeFrequency);
         logger.info("Ready!");
     }
 
     public void close() {
         server.close();
+        HikariManager.INSTANCE.getHikariExtender().getDataSource().close();
 
         // Based on (it could not work properly though)
         // https://github.com/SpigotMC/BungeeCord/blob/master/proxy/src/main/java/net/md_5/bungee/BungeeCord.java#L413

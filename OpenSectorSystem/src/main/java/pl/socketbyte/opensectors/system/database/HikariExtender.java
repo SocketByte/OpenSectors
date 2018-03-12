@@ -40,16 +40,12 @@ public abstract class HikariExtender {
     protected abstract void connect();
 
     public Connection getConnection() {
-        Connection connection = null;
         try {
-            HikariProxyConnection hikariProxyConnection = (HikariProxyConnection) getDataSource().getConnection();
-            if (hikariProxyConnection.isWrapperFor(Connection.class)) {
-                connection = hikariProxyConnection.unwrap(Connection.class);
-            }
+            return dataSource.getConnection();
         } catch (SQLException e) {
-            StackTraceHandler.handle(Database.class, e, StackTraceSeverity.FATAL);
+            e.printStackTrace();
         }
-        return connection;
+        return null;
     }
 
     public HikariDataSource getDataSource() {

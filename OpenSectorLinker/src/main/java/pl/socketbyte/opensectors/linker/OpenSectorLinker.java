@@ -20,6 +20,7 @@ import pl.socketbyte.opensectors.linker.logging.StackTraceSeverity;
 import pl.socketbyte.opensectors.linker.packet.*;
 import pl.socketbyte.opensectors.linker.packet.serializable.SerializablePotionEffect;
 import pl.socketbyte.opensectors.linker.packet.serializable.SerializableResultSet;
+import pl.socketbyte.opensectors.linker.packet.serializable.Weather;
 import pl.socketbyte.opensectors.linker.sector.SectorManager;
 
 import java.io.File;
@@ -159,6 +160,8 @@ public class OpenSectorLinker extends JavaPlugin {
         kryo.register(PacketQuery.class);
         kryo.register(PacketQueryExecute.class);
         kryo.register(PacketUpdatePlayerSession.class);
+        kryo.register(Weather.class);
+        kryo.register(PacketWeatherInfo.class);
 
         logger.info("Registering the client adapter...");
         // Registering the client adapter

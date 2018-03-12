@@ -30,7 +30,7 @@ public class Sector {
 
     public boolean isAtEdge(Location location) {
         return !isIn(location) && isNear(location)
-                && (howClose(location) > -2 && howClose(location) < 1.5);
+                && (howClose(location) < 2);
     }
 
     public boolean isNear(Location location) {

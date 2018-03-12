@@ -1,11 +1,16 @@
 package pl.socketbyte.opensectors.linker.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.potion.PotionEffect;
 import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
@@ -15,13 +20,35 @@ import pl.socketbyte.opensectors.linker.packet.serializable.SerializablePotionEf
 import pl.socketbyte.opensectors.linker.sector.Sector;
 import pl.socketbyte.opensectors.linker.sector.SectorManager;
 import pl.socketbyte.opensectors.linker.util.*;
+import pl.socketbyte.opensectors.linker.util.reflection.ProtocolManager;
 
 import java.text.DecimalFormat;
-import java.util.Collection;
+import java.util.*;
 
 public class PlayerMoveListener implements Listener {
 
     private final DecimalFormat df = new DecimalFormat("#.#");
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+        if (!event.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL))
+            return;
+
+        Player player = event.getPlayer();
+        Location from = event.getFrom();
+        Location to = event.getTo();
+
+        Sector fromSector = SectorManager.INSTANCE.getAt(from);
+        Sector toSector = SectorManager.INSTANCE.getAt(to);
+
+        if (fromSector == null || toSector == null) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (!fromSector.getServerController().name.equals(toSector.getServerController().name))
+            event.setCancelled(true);
+    }
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -38,8 +65,11 @@ public class PlayerMoveListener implements Listener {
 
                 double howClose = sector.howClose(to);
 
-                ActionBar.send(player, OpenSectorLinker.getInstance().getConfig().getString("sector-border-close")
+                ProtocolManager.getActionBar().send(player, OpenSectorLinker.getInstance().getConfig().getString("sector-border-close")
                         .replace("%distance%", df.format(howClose).replace(",", ".")));
+
+                //player.sendMessage(howClose + " ->" + ChatColor.RED + " do "
+                //        + ChatColor.RESET + sector.getServerController().name);
 
                 if (!sector.isAtEdge(to))
                     return;

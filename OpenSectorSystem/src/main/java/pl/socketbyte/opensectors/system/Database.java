@@ -1,7 +1,5 @@
 package pl.socketbyte.opensectors.system;
 
-import com.zaxxer.hikari.HikariDataSource;
-import com.zaxxer.hikari.pool.HikariProxyConnection;
 import pl.socketbyte.opensectors.system.database.HikariManager;
 import pl.socketbyte.opensectors.system.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.system.logging.StackTraceSeverity;
@@ -14,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 
 public class Database {
@@ -28,8 +25,9 @@ public class Database {
     }
 
     protected static void insertPlayerSession(UUID uniqueId, int serverId) {
+        Connection connection = HikariManager.INSTANCE.getConnection();
         try {
-            PreparedStatement statement = HikariManager.INSTANCE.getConnection().prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO playerData VALUES (?, ?)");
             statement.setString(1, uniqueId.toString());
             statement.setInt(2, serverId);
@@ -38,11 +36,19 @@ public class Database {
         } catch (SQLException e) {
             StackTraceHandler.handle(Database.class, e, StackTraceSeverity.WARNING);
         }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected static void updatePlayerSession(UUID uniqueId, int serverId) {
+        Connection connection = HikariManager.INSTANCE.getConnection();
         try {
-            PreparedStatement statement = HikariManager.INSTANCE.getConnection().prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                     "UPDATE playerData SET serverId=? WHERE uniqueId=?");
             statement.setInt(1, serverId);
             statement.setString(2, uniqueId.toString());
@@ -51,11 +57,19 @@ public class Database {
         } catch (SQLException e) {
             StackTraceHandler.handle(Database.class, e, StackTraceSeverity.WARNING);
         }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected static int getPlayerSession(UUID uniqueId) {
+        Connection connection = HikariManager.INSTANCE.getConnection();
         try {
-            PreparedStatement statement = HikariManager.INSTANCE.getConnection().prepareStatement(
+            PreparedStatement statement = connection.prepareStatement(
                     "SELECT serverId FROM playerData WHERE uniqueId=?");
             statement.setString(1, uniqueId.toString());
             ResultSet rs = statement.executeQuery();
@@ -65,13 +79,21 @@ public class Database {
         } catch (SQLException e) {
             StackTraceHandler.handle(Database.class, e, StackTraceSeverity.WARNING);
         }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         return -1;
     }
 
     public static PreparedStatement executeUpdate(PacketQuery packet) {
+        Connection connection = HikariManager.INSTANCE.getConnection();
         PreparedStatement statement = null;
         try {
-            statement = HikariManager.INSTANCE.getConnection().prepareStatement(packet.getQuery());
+            statement = connection.prepareStatement(packet.getQuery());
             for (Map.Entry<Integer, Object> replacement : packet.getReplacements().entrySet())
                 statement.setObject(replacement.getKey(), replacement.getValue());
         } catch (SQLException e) {
@@ -90,6 +112,14 @@ public class Database {
             packet.setResultSet(serializableResultSet);
         } catch (SQLException e) {
             StackTraceHandler.handle(Database.class, e, StackTraceSeverity.ERROR);
+        }
+        finally {
+            try {
+                statement.close();
+                statement.getConnection().close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return packet;
     }
