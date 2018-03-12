@@ -2,7 +2,7 @@ package pl.socketbyte.opensectors.linker.sector;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import pl.socketbyte.opensectors.linker.Linker;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.json.JSONConfig;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 
@@ -63,7 +63,7 @@ public enum SectorManager {
     }
 
     public void load() {
-        JSONConfig jsonConfig = Linker.getConfiguration();
+        JSONConfig jsonConfig = OpenSectorLinker.getConfiguration();
         ServerController[] controllers = jsonConfig.serverControllers;
         int size = jsonConfig.sectorSize;
         int sectors = jsonConfig.sectors;

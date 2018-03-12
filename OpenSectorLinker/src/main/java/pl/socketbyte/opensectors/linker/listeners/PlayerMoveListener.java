@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
-import pl.socketbyte.opensectors.linker.Linker;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 import pl.socketbyte.opensectors.linker.packet.PacketPlayerInfo;
 import pl.socketbyte.opensectors.linker.packet.PacketPlayerTransferRequest;
@@ -27,7 +27,7 @@ public class PlayerMoveListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        Bukkit.getScheduler().runTaskAsynchronously(Linker.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(OpenSectorLinker.getInstance(), () -> {
             Location from = event.getFrom();
             Location to = event.getTo();
 
@@ -38,7 +38,7 @@ public class PlayerMoveListener implements Listener {
 
                 double howClose = sector.howClose(to);
 
-                ActionBar.send(player, Linker.getInstance().getConfig().getString("sector-border-close")
+                ActionBar.send(player, OpenSectorLinker.getInstance().getConfig().getString("sector-border-close")
                         .replace("%distance%", df.format(howClose).replace(",", ".")));
 
                 if (!sector.isAtEdge(to))
@@ -49,7 +49,7 @@ public class PlayerMoveListener implements Listener {
 
                 int x = player.getLocation().getBlockX(), z = player.getLocation().getBlockZ();
                 ServerController current = SectorManager.INSTANCE.getSectorMap()
-                        .get(Linker.getServerId())
+                        .get(OpenSectorLinker.getServerId())
                         .getServerController();
                 int[] destination = Util.getDestinationWithOffset(current,
                         sector.getServerController(), x, z);
@@ -99,7 +99,7 @@ public class PlayerMoveListener implements Listener {
 
                 NetworkManager.sendTCP(packet);
 
-                Bukkit.getScheduler().runTaskLater(Linker.getInstance(),
+                Bukkit.getScheduler().runTaskLater(OpenSectorLinker.getInstance(),
                         () -> PlayerTransferHolder.getTransfering().remove(player.getUniqueId()), 10);
             }
         });

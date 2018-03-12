@@ -1,9 +1,8 @@
 package pl.socketbyte.opensectors.linker.util;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import pl.socketbyte.opensectors.linker.Linker;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 
 public class ActionBar {
 
@@ -17,7 +16,7 @@ public class ActionBar {
             public void run() {
                 send(player, text);
             }
-        }.runTaskTimer(Linker.getInstance(), 20, seconds * 20);
+        }.runTaskTimer(OpenSectorLinker.getInstance(), 20, seconds * 20);
     }
 
 }

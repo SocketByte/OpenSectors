@@ -10,6 +10,7 @@ public class JSONConfig {
     public int sectors;
     public int portTCP;
     public int portUDP;
+    public int bufferSize;
     public long bukkitTimeFrequency;
     public int bukkitTimeIncremental;
     public int border;

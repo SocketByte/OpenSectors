@@ -1,6 +1,6 @@
 package pl.socketbyte.opensectors.linker.api;
 
-import pl.socketbyte.opensectors.linker.Linker;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.packet.PacketQuery;
 import pl.socketbyte.opensectors.linker.packet.PacketQueryExecute;
 import pl.socketbyte.opensectors.linker.util.NetworkManager;
@@ -65,7 +65,7 @@ public class SectorAPI {
      * @param clazz External class which will be used in one of your Packet classes
      */
     public static void register(Class clazz) {
-        Linker.getClient().getKryo().register(clazz);
+        OpenSectorLinker.getClient().getKryo().register(clazz);
     }
 
     /**

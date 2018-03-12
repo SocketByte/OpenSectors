@@ -30,6 +30,7 @@ public enum JSONManager {
                     config.sectors = 4;
                     config.portTCP = 23904;
                     config.portUDP = 23905;
+                    config.bufferSize = 8192;
                     config.bukkitTimeFrequency = 500;
                     config.bukkitTimeIncremental = 10;
                     config.border = 1500;
@@ -39,6 +40,7 @@ public enum JSONManager {
                     sqlController.user = "root";
                     sqlController.password = "";
                     sqlController.database = "opensectors";
+                    sqlController.useDefaultSql = true;
                     config.sqlController = sqlController;
                     ServerController example1 = new ServerController();
                     example1.port = 25566;

@@ -1,4 +1,4 @@
-# OpenSectors ![version](https://img.shields.io/badge/version-1.0-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
+# OpenSectors ![version](https://img.shields.io/badge/version-1.1-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
 OpenSectors allow you to split your world into different servers
 using Kryonet and other networking solutions. This plugin splits your
 world into few pieces and each piece is different server. Everything
@@ -85,6 +85,7 @@ ANY of location scaling systems or similar currently.
    proxy-port-tcp: 23904
    proxy-port-udp: 23905
    proxy-connection-timeout: 5000
+   bufferSize: 8192 # Buffer size, increase it to send larger packets
    kryonet-logging: NONE
    auth-password: "CHANGE_THIS_TO_YOUR_PASSWORD___IT_NEEDS_TO_BE_SECURE!"
    # Messages
@@ -103,9 +104,10 @@ ANY of location scaling systems or similar currently.
 {
   "password": "CHANGE_THIS_TO_YOUR_PASSWORD___IT_NEEDS_TO_BE_SECURE!",
   "sectorSize": 500,
-  "sectors": 9,
-  "portTCP": 23904,
+  "sectors": 9,      
+  "portTCP": 23904,  
   "portUDP": 23905,
+  "bufferSize": 8192, // Buffer size, increase it to send larger packets
   "bukkitTimeFrequency": 500,
   "bukkitTimeIncremental": 10,
   "border": 1500,
@@ -114,7 +116,8 @@ ANY of location scaling systems or similar currently.
     "port": 3306,
     "user": "root",
     "password": "",
-    "database": "opensectors"
+    "database": "opensectors",
+    "useDefaultSql": true // Set it to false if you want to set your own SQL
   },
   "serverControllers": [
     {
@@ -244,7 +247,7 @@ Add this code to your maven dependencies.
         <dependency>
             <groupId>pl.socketbyte</groupId>
             <artifactId>OpenSectorLinker</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -264,7 +267,7 @@ or this code when you make plugin for system:
         <dependency>
             <groupId>pl.socketbyte</groupId>
             <artifactId>OpenSectorSystem</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -393,6 +396,115 @@ you need to check javadocs!
 You can get javadocs here: https://socketbyte.pl/javadocs/
 
 (and select proper project)
+
+### How to make your own database?
+The newest API allows you to set the database (like MariaDB, PostgreSQL, OrientDB or SQLite)
+
+How to do it? It is very simple.
+Set `useDefaultSql` value in JSON (system) configuration to `false`.
+
+This code needs to be in `onEnable()` of your addon plugin.
+```java
+HikariMySQL hikari = new HikariMySQL();
+hikari.setHost("localhost");
+hikari.setDatabase("database");
+hikari.setPort(3306);
+hikari.setPassword("");
+hikari.setUser("root");
+hikari.apply();
+
+HikariManager.INSTANCE.connect();
+```
+Congratulations, you did a standard MySQL connection.
+But what about others? I've prepared 4 most popular SQL configurations for Hikari.
+
+Just change the class like this:
+```java
+HikariMariaDb hikari = new HikariMariaDb();
+hikari.setHost("localhost");
+hikari.setDatabase("database");
+hikari.setPort(3306);
+hikari.setPassword("");
+hikari.setUser("root");
+hikari.apply();
+
+HikariManager.INSTANCE.connect();
+```
+You can do the same with:
+```java
+new HikariSQLite();
+new HikariPostgreSQL();
+```
+Remember, SQLite doesn't need port, password or user.
+You need only to set database, which is your file name.
+
+What about basic table creation? There's an API for that too!
+```java
+hikariMySQL.setTableWork(connection -> {
+    try {
+        PreparedStatement statement = connection.prepareStatement(
+                "CREATE TABLE IF NOT EXISTS...");
+        statement.executeUpdate();
+        statement.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+});
+```
+Simple as that, then activate it by using:
+```java
+HikariManager.INSTANCE.createBasicTables();
+```
+You can also create your own database configurations for other SQL distributions.
+You can do that in two ways. Do a custom class which extend `HikariExtender`, or use `HikariWrapper`.
+
+#### HikariExtender
+Make a class and do `extends HikariExtender`, apply, and set everything.
+You can access `HikariDataSource` by using `getDataSource()` and every other
+setting using `getPassword()` or `getHost()`.
+
+Example (SQLite class):
+```java
+public class HikariSQLite extends HikariExtender {
+    @Override
+    protected void connect() {
+        HikariDataSource dataSource = getDataSource();
+        String database = getDatabase();
+
+        // Do everything you want here.
+        dataSource.setJdbcUrl("jdbc:sqlite:" + database + ".db");
+        dataSource.setDriverClassName("org.sqlite.JDBC");
+        dataSource.setPoolName("HikariSQLite");
+        dataSource.setMaxLifetime(0);
+        dataSource.setMaxLifetime(60000);
+        dataSource.setIdleTimeout(45000);
+        dataSource.setMaximumPoolSize(20);
+
+        Properties properties = new Properties();
+        properties.put("driverType", "thin");
+        dataSource.setDataSourceProperties(properties);
+    }
+}
+```
+#### HikariWrapper
+HikariWrapper is a class that allows you to do everything like above,
+but without creating a new class. Why? Because you can!
+
+Example:
+```java
+HikariWrapper hikariWrapper = new HikariWrapper(hikariWrapper1 -> {
+    HikariDataSource dataSource = hikariWrapper1.getDataSource();
+    
+    dataSource.setJdbcUrl("...");
+    dataSource.setDriverClassName("...");
+});
+hikariWrapper.apply();
+
+HikariManager.INSTANCE.connect();
+```
+More about `HikariCP` here: 
+
+https://github.com/brettwooldridge/HikariCP
 
 ## Contribution
 Yes! Of course you can contribute in `OpenSectors`

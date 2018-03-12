@@ -7,6 +7,7 @@ public class SQLController {
     public String user;
     public String password;
     public String database;
+    public boolean useDefaultSql;
 
     @Override
     public String toString() {

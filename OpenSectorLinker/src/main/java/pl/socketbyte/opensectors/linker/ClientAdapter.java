@@ -27,9 +27,9 @@ public class ClientAdapter extends Listener {
         if (object instanceof PacketConfigurationInfo) {
             PacketConfigurationInfo packet = (PacketConfigurationInfo)object;
 
-            Linker.setConfiguration(packet.getJsonConfig());
-            Linker.getInstance().getLogger().info("Successfully received configuration data from the proxy server.");
-            Linker.ready();
+            OpenSectorLinker.setConfiguration(packet.getJsonConfig());
+            OpenSectorLinker.getInstance().getLogger().info("Successfully received configuration data from the proxy server.");
+            OpenSectorLinker.ready();
         }
         else if (object instanceof PacketQueryExecute) {
             PacketQueryExecute packet = (PacketQueryExecute)object;

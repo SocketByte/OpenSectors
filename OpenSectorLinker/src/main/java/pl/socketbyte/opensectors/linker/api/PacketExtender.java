@@ -1,6 +1,6 @@
 package pl.socketbyte.opensectors.linker.api;
 
-import pl.socketbyte.opensectors.linker.Linker;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class PacketExtender {
     }
 
     public PacketExtender register() {
-        Linker.getClient().getKryo().register(packet);
+        OpenSectorLinker.getClient().getKryo().register(packet);
         return this;
     }
 

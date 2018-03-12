@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-public class Linker extends JavaPlugin {
+public class OpenSectorLinker extends JavaPlugin {
 
-    public static final String VERSION = "0.0.12a";
+    public static final String VERSION = "1.1";
 
-    private static final Client client = new Client(8192, 8192);
-    private static Linker instance;
+    private static Client client;
+    private static OpenSectorLinker instance;
     private static JSONConfig config;
     private static int serverId;
 
@@ -71,7 +71,7 @@ public class Linker extends JavaPlugin {
         return client;
     }
 
-    public static Linker getInstance() {
+    public static OpenSectorLinker getInstance() {
         return instance;
     }
 
@@ -119,6 +119,8 @@ public class Linker extends JavaPlugin {
 
         // Starting client connection
         logger.info("Starting kryonet connection to proxy...");
+        client = new Client(getConfig().getInt("bufferSize"),
+                getConfig().getInt("bufferSize"));
         client.start();
         try {
             logger.info("Connecting to proxy...");
@@ -126,7 +128,7 @@ public class Linker extends JavaPlugin {
                     getConfig().getString("proxy-address"), getConfig().getInt("proxy-port-tcp"),
                     getConfig().getInt("proxy-port-udp"));
         } catch (IOException e) {
-            StackTraceHandler.handle(Linker.class, e, StackTraceSeverity.FATAL);
+            StackTraceHandler.handle(OpenSectorLinker.class, e, StackTraceSeverity.FATAL);
             return;
         }
         logger.info("Registering kryo classes...");
@@ -163,21 +165,21 @@ public class Linker extends JavaPlugin {
         client.addListener(new ClientAdapter());
 
         logger.info("Reading the linker server id from configuration file...");
-        Linker.setServerId(getConfig().getInt("server-id"));
+        OpenSectorLinker.setServerId(getConfig().getInt("server-id"));
 
         logger.info("Trying to authorize the linker...");
         // Authorizing the linker with proxy server.
         PacketLinkerAuthRequest packet = new PacketLinkerAuthRequest();
         packet.setPassword(Cryptography.sha256(getConfig().getString("auth-password")));
-        packet.setServerId(Linker.getServerId());
+        packet.setServerId(OpenSectorLinker.getServerId());
         client.sendTCP(packet);
     }
 
     public static void ready() {
-        log().info("Success. Linker is now authorized and ready to use.");
-        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), Linker.getInstance());
-        Bukkit.getPluginManager().registerEvents(new PlayerListeners(), Linker.getInstance());
-        Bukkit.getPluginManager().registerEvents(new SectorProtectionListeners(), Linker.getInstance());
+        log().info("Success. OpenSectorLinker is now authorized and ready to use.");
+        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), OpenSectorLinker.getInstance());
+        Bukkit.getPluginManager().registerEvents(new PlayerListeners(), OpenSectorLinker.getInstance());
+        Bukkit.getPluginManager().registerEvents(new SectorProtectionListeners(), OpenSectorLinker.getInstance());
 
         log().info("Loading sectors...");
         SectorManager.INSTANCE.load();

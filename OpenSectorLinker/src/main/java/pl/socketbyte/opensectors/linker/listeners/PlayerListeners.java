@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import pl.socketbyte.opensectors.linker.Linker;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 import pl.socketbyte.opensectors.linker.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.linker.logging.StackTraceSeverity;
@@ -44,7 +44,7 @@ public class PlayerListeners implements Listener {
             inventory = Serializer.deserializeInventory(packet.getInventory());
             armor = Serializer.deserializeInventory(packet.getArmorContents());
         } catch (IOException e) {
-            StackTraceHandler.handle(Linker.class, e, StackTraceSeverity.ERROR);
+            StackTraceHandler.handle(OpenSectorLinker.class, e, StackTraceSeverity.ERROR);
         }
         SerializablePotionEffect[] potionEffects = packet.getPotionEffects();
         Location destination = new Location(player.getWorld(), packet.getX(), packet.getY(), packet.getZ(),
@@ -71,8 +71,8 @@ public class PlayerListeners implements Listener {
         player.setGameMode(GameMode.valueOf(packet.getGameMode()));
         player.getInventory().setHeldItemSlot(packet.getHeldSlot());
 
-        ServerController controller = Linker.getServerController(Linker.getServerId());
-        for (String str : Linker.getInstance().getConfig().getStringList("sector-welcome-message")) {
+        ServerController controller = OpenSectorLinker.getServerController(OpenSectorLinker.getServerId());
+        for (String str : OpenSectorLinker.getInstance().getConfig().getStringList("sector-welcome-message")) {
             player.sendMessage(Util.fixColors(
                     str
                             .replace("%id%", String.valueOf(controller.id))
@@ -91,7 +91,7 @@ public class PlayerListeners implements Listener {
 
         PacketUpdatePlayerSession session = new PacketUpdatePlayerSession();
         session.setPlayerUniqueId(playerUniqueId.toString());
-        session.setServerId(Linker.getServerId());
+        session.setServerId(OpenSectorLinker.getServerId());
 
         NetworkManager.sendTCP(session);
     }

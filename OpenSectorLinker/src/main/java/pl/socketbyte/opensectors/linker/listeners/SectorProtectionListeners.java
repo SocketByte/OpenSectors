@@ -8,7 +8,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import pl.socketbyte.opensectors.linker.Linker;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.sector.SectorManager;
 import pl.socketbyte.opensectors.linker.util.Util;
 
@@ -20,7 +20,7 @@ public class SectorProtectionListeners implements Listener {
         Location location = event.getBlock().getLocation();
 
         if (SectorManager.INSTANCE.isNear(location, 45)) {
-            player.sendMessage(Util.fixColors(Linker.getInstance()
+            player.sendMessage(Util.fixColors(OpenSectorLinker.getInstance()
                     .getConfig().getString("sector-break-message")));
             event.setCancelled(true);
         }
@@ -32,7 +32,7 @@ public class SectorProtectionListeners implements Listener {
         Location location = event.getBlock().getLocation();
 
         if (SectorManager.INSTANCE.isNear(location, 45)) {
-            player.sendMessage(Util.fixColors(Linker.getInstance()
+            player.sendMessage(Util.fixColors(OpenSectorLinker.getInstance()
                     .getConfig().getString("sector-place-message")));
             event.setCancelled(true);
         }
@@ -48,7 +48,7 @@ public class SectorProtectionListeners implements Listener {
         Location location = event.getBlock().getLocation();
 
         if (SectorManager.INSTANCE.isNear(location, 45)) {
-            player.sendMessage(Util.fixColors(Linker.getInstance()
+            player.sendMessage(Util.fixColors(OpenSectorLinker.getInstance()
                     .getConfig().getString("sector-ignite-message")));
             event.setCancelled(true);
         }
@@ -60,7 +60,7 @@ public class SectorProtectionListeners implements Listener {
         Location location = event.getBlockClicked().getLocation();
 
         if (SectorManager.INSTANCE.isNear(location, 45)) {
-            player.sendMessage(Util.fixColors(Linker.getInstance()
+            player.sendMessage(Util.fixColors(OpenSectorLinker.getInstance()
                     .getConfig().getString("sector-bucket-message")));
             event.setCancelled(true);
         }

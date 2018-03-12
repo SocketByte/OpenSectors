@@ -3,10 +3,16 @@ package pl.socketbyte.opensectors.system;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
+import com.zaxxer.hikari.HikariDataSource;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import pl.socketbyte.opensectors.system.api.IPacketAdapter;
 import pl.socketbyte.opensectors.system.cryptography.Cryptography;
+import pl.socketbyte.opensectors.system.database.HikariManager;
+import pl.socketbyte.opensectors.system.database.HikariRunnable;
+import pl.socketbyte.opensectors.system.database.HikariTableWork;
+import pl.socketbyte.opensectors.system.database.HikariWrapper;
+import pl.socketbyte.opensectors.system.database.basic.HikariMySQL;
 import pl.socketbyte.opensectors.system.functionality.BukkitTimeCalculator;
 import pl.socketbyte.opensectors.system.json.JSONConfig;
 import pl.socketbyte.opensectors.system.json.JSONManager;
@@ -21,7 +27,10 @@ import pl.socketbyte.opensectors.system.packet.serializable.SerializableResultSe
 import pl.socketbyte.opensectors.system.util.ExecutorScheduler;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,9 +40,9 @@ import java.util.logging.Logger;
 
 public class OpenSectorSystem extends Plugin {
 
-    public static final String VERSION = "0.0.12a";
+    public static final String VERSION = "1.1";
 
-    private static final Server server = new Server(8192, 8192);
+    private static Server server;
     private static OpenSectorSystem instance;
     private static JSONConfig config;
 
@@ -80,11 +89,36 @@ public class OpenSectorSystem extends Plugin {
         logger.info("Loading byte informator...");
         ByteInformator.runScheduledTask();
 
-        logger.info("Connecting to the MySQL server...");
-        Database.connect(config.sqlController.host, config.sqlController.port,
-                config.sqlController.database, config.sqlController.user, config.sqlController.password);
+        if (config.sqlController.useDefaultSql) {
+            logger.info("Connecting to the default MySQL server...");
+
+            HikariMySQL hikariMySQL = new HikariMySQL();
+            hikariMySQL.setHost(config.sqlController.host);
+            hikariMySQL.setDatabase(config.sqlController.database);
+            hikariMySQL.setPort(config.sqlController.port);
+            hikariMySQL.setPassword(config.sqlController.password);
+            hikariMySQL.setUser(config.sqlController.user);
+            hikariMySQL.apply();
+
+            hikariMySQL.setTableWork(connection -> {
+                try {
+                    PreparedStatement statement = connection.prepareStatement(
+                            "CREATE TABLE IF NOT EXISTS playerData (" +
+                                    "uniqueId CHAR(36) NOT NULL, " +
+                                    "serverId INT NOT NULL)");
+                    statement.executeUpdate();
+                    statement.close();
+                } catch (SQLException e) {
+                    StackTraceHandler.handle(Database.class, e, StackTraceSeverity.ERROR);
+                }
+            });
+
+            HikariManager.INSTANCE.connect();
+            HikariManager.INSTANCE.createBasicTables();
+        }
 
         logger.info("Starting kryonet server instance...");
+        server = new Server(config.bufferSize, config.bufferSize);
         server.start();
         try {
             logger.info("Binding TCP & UDP ports...");

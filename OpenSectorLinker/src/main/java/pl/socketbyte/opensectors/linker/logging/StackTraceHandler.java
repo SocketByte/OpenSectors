@@ -1,7 +1,7 @@
 package pl.socketbyte.opensectors.linker.logging;
 
 import org.bukkit.Bukkit;
-import pl.socketbyte.opensectors.linker.Linker;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 
 import java.util.Arrays;
 
@@ -19,7 +19,7 @@ public class StackTraceHandler {
         System.out.println("[------------- Detailed stacktrace -------------]");
         e.printStackTrace();
         System.out.println("[------------- End of detailed stacktrace -------------]");
-        System.out.println("OpenSectorLinker version: " + Linker.VERSION);
+        System.out.println("OpenSectorLinker version: " + OpenSectorLinker.VERSION);
         System.out.println("[------------- End of error -------------]");
     }
 
@@ -31,7 +31,7 @@ public class StackTraceHandler {
                 Bukkit.shutdown();
                 break;
             case WARNING:
-                Bukkit.getPluginManager().disablePlugin(Linker.getInstance());
+                Bukkit.getPluginManager().disablePlugin(OpenSectorLinker.getInstance());
                 break;
         }
     }

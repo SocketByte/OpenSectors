@@ -4,6 +4,7 @@ proxy-address: "127.0.0.1"
 proxy-port-tcp: 23904
 proxy-port-udp: 23905
 proxy-connection-timeout: 5000
+bufferSize: 8192
 kryonet-logging: NONE
 auth-password: "CHANGE_THIS_TO_YOUR_PASSWORD___IT_NEEDS_TO_BE_SECURE!"
 # Messages
