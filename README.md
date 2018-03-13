@@ -449,6 +449,13 @@ hikariMySQL.setTableWork(connection -> {
     } catch (SQLException e) {
         e.printStackTrace();
     }
+    finally {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 });
 ```
 Simple as that, then activate it by using:
