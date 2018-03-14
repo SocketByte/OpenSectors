@@ -66,7 +66,8 @@ public class PlayerMoveListener implements Listener {
                 double howClose = sector.howClose(to);
 
                 ProtocolManager.getActionBar().send(player, OpenSectorLinker.getInstance().getConfig().getString("sector-border-close")
-                        .replace("%distance%", df.format(howClose).replace(",", ".")));
+                        .replace("%distance%", df.format(howClose).replace(",", "."))
+                        .replace("%sector%", sector.getServerController().name));
 
                 //player.sendMessage(howClose + " ->" + ChatColor.RED + " do "
                 //        + ChatColor.RESET + sector.getServerController().name);

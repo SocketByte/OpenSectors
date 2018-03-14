@@ -21,7 +21,7 @@ public class SectorProtectionListeners implements Listener {
 
         if (SectorManager.INSTANCE.isNear(location, 45)) {
             player.sendMessage(Util.fixColors(OpenSectorLinker.getInstance()
-                    .getConfig().getString("sector-break-message")));
+                    .getConfig().getString("sector-place-message")));
             event.setCancelled(true);
         }
     }
@@ -33,7 +33,7 @@ public class SectorProtectionListeners implements Listener {
 
         if (SectorManager.INSTANCE.isNear(location, 45)) {
             player.sendMessage(Util.fixColors(OpenSectorLinker.getInstance()
-                    .getConfig().getString("sector-place-message")));
+                    .getConfig().getString("sector-break-message")));
             event.setCancelled(true);
         }
     }

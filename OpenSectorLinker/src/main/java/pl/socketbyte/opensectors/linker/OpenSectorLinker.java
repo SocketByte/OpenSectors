@@ -191,7 +191,7 @@ public class OpenSectorLinker extends JavaPlugin {
         World world = Bukkit.getWorlds().get(0);
 
         WorldBorder worldBorder = world.getWorldBorder();
-        worldBorder.setSize(config.border * 2);
+        worldBorder.setSize((config.border - 25) * 2); // im genius XD
         worldBorder.setCenter(0, 0);
         log().info("Ready!");
     }

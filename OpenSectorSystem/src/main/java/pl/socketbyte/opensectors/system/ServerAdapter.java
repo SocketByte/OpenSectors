@@ -79,7 +79,10 @@ public class ServerAdapter extends Listener {
             PacketPlayerInfo packetPlayerInfo = packet.getPlayerInfo();
             LinkerConnection linkerConnection = LinkerStorage.getLinker(id);
 
-            System.out.println(linkerConnection.getId() + " connection id");
+            if (linkerConnection == null) {
+                OpenSectorSystem.log().warning("Linker with id " + id + " is not connected or it is not responding!");
+                return;
+            }
 
             NetworkManager.sendTCP(linkerConnection.getConnection(), packetPlayerInfo);
             ServerManager.transfer(uniqueId, id);
