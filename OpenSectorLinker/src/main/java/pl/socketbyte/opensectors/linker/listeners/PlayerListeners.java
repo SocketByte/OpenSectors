@@ -85,13 +85,15 @@ public class PlayerListeners implements Listener {
             player.getInventory().setArmorContents(armor);
         player.teleport(Util.getValidLocation(destination));
 
-        for (SerializablePotionEffect potionEffect : potionEffects) {
-            PotionEffect effect = new PotionEffect(
-                    PotionEffectType.getByName(potionEffect.getPotionEffectType()),
-                    potionEffect.getDuration(),
-                    potionEffect.getAmplifier());
+        if (potionEffects != null) {
+            for (SerializablePotionEffect potionEffect : potionEffects) {
+                PotionEffect effect = new PotionEffect(
+                        PotionEffectType.getByName(potionEffect.getPotionEffectType()),
+                        potionEffect.getDuration(),
+                        potionEffect.getAmplifier());
 
-            player.addPotionEffect(effect);
+                player.addPotionEffect(effect);
+            }
         }
 
         player.setHealth(packet.getHealth());
