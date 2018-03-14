@@ -16,6 +16,9 @@ public class PacketInjector {
     public static void sendPacket(Player player, Object packet) {
         try {
             Object playerConnection = connections.get(player.getUniqueId());
+            if (playerConnection == null)
+                return;
+
             playerConnection.getClass().getMethod("sendPacket",
                     packetClass).invoke(playerConnection, packet);
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
