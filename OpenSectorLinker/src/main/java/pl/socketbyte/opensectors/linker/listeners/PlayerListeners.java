@@ -42,19 +42,11 @@ public class PlayerListeners implements Listener {
         playerInfo.setX(OpenSectorLinker.getInstance().getConfig().getInt("spawn.x"));
         playerInfo.setY(OpenSectorLinker.getInstance().getConfig().getInt("spawn.y"));
         playerInfo.setY(OpenSectorLinker.getInstance().getConfig().getInt("spawn.z"));
-        playerInfo.setYaw(0);
-        playerInfo.setPitch(0);
         playerInfo.setHealth(20);
         playerInfo.setFood(20);
-        playerInfo.setHeldSlot(0);
         playerInfo.setGameMode("SURVIVAL");
         playerInfo.setFly(false);
-        playerInfo.setLevel(0);
-        playerInfo.setExp(0);
         playerInfo.setPlayerUniqueId(player.getUniqueId().toString());
-        playerInfo.setInventory(Serializer.serializeInventory(new ItemStack[36]));
-        playerInfo.setArmorContents(Serializer.serializeInventory(new ItemStack[4]));
-        playerInfo.setPotionEffects(new SerializablePotionEffect[0]);
 
         transferRequest.setPlayerInfo(playerInfo);
 
@@ -75,8 +67,11 @@ public class PlayerListeners implements Listener {
         ItemStack[] inventory = new ItemStack[0];
         ItemStack[] armor = new ItemStack[0];
         try {
-            inventory = Serializer.deserializeInventory(packet.getInventory());
-            armor = Serializer.deserializeInventory(packet.getArmorContents());
+            if (packet.getInventory() != null)
+                inventory = Serializer.deserializeInventory(packet.getInventory());
+
+            if (packet.getArmorContents() != null)
+                armor = Serializer.deserializeInventory(packet.getArmorContents());
         } catch (IOException e) {
             StackTraceHandler.handle(OpenSectorLinker.class, e, StackTraceSeverity.ERROR);
         }
@@ -84,8 +79,10 @@ public class PlayerListeners implements Listener {
         Location destination = new Location(player.getWorld(), packet.getX(), packet.getY(), packet.getZ(),
                 packet.getYaw(), packet.getPitch());
 
-        player.getInventory().setContents(inventory);
-        player.getInventory().setArmorContents(armor);
+        if (packet.getInventory() != null)
+            player.getInventory().setContents(inventory);
+        if (packet.getArmorContents() != null)
+            player.getInventory().setArmorContents(armor);
         player.teleport(Util.getValidLocation(destination));
 
         for (SerializablePotionEffect potionEffect : potionEffects) {
