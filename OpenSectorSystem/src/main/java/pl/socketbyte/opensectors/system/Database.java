@@ -1,5 +1,6 @@
 package pl.socketbyte.opensectors.system;
 
+import net.md_5.bungee.api.ProxyServer;
 import pl.socketbyte.opensectors.system.database.HikariManager;
 import pl.socketbyte.opensectors.system.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.system.logging.StackTraceSeverity;
@@ -25,45 +26,49 @@ public class Database {
     }
 
     protected static void insertPlayerSession(UUID uniqueId, int serverId) {
-        Connection connection = HikariManager.INSTANCE.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO playerData VALUES (?, ?)");
-            statement.setString(1, uniqueId.toString());
-            statement.setInt(2, serverId);
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            StackTraceHandler.handle(Database.class, e, StackTraceSeverity.WARNING);
-        }
-        finally {
+        // Not sure if it is safe to async this, probably will make that an option in the future.
+        ProxyServer.getInstance().getScheduler().runAsync(OpenSectorSystem.getInstance(), () -> {
+            Connection connection = HikariManager.INSTANCE.getConnection();
             try {
-                connection.close();
+                PreparedStatement statement = connection.prepareStatement(
+                        "INSERT INTO playerData VALUES (?, ?)");
+                statement.setString(1, uniqueId.toString());
+                statement.setInt(2, serverId);
+                statement.executeUpdate();
+                statement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                StackTraceHandler.handle(Database.class, e, StackTraceSeverity.WARNING);
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        });
     }
 
     protected static void updatePlayerSession(UUID uniqueId, int serverId) {
-        Connection connection = HikariManager.INSTANCE.getConnection();
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "UPDATE playerData SET serverId=? WHERE uniqueId=?");
-            statement.setInt(1, serverId);
-            statement.setString(2, uniqueId.toString());
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            StackTraceHandler.handle(Database.class, e, StackTraceSeverity.WARNING);
-        }
-        finally {
+        ProxyServer.getInstance().getScheduler().runAsync(OpenSectorSystem.getInstance(), () -> {
+            Connection connection = HikariManager.INSTANCE.getConnection();
             try {
-                connection.close();
+                PreparedStatement statement = connection.prepareStatement(
+                        "UPDATE playerData SET serverId=? WHERE uniqueId=?");
+                statement.setInt(1, serverId);
+                statement.setString(2, uniqueId.toString());
+                statement.executeUpdate();
+                statement.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+                StackTraceHandler.handle(Database.class, e, StackTraceSeverity.WARNING);
             }
-        }
+            finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     protected static int getPlayerSession(UUID uniqueId) {
@@ -86,7 +91,7 @@ public class Database {
                 e.printStackTrace();
             }
         }
-        return -1;
+        return 0;
     }
 
     public static PreparedStatement executeUpdate(PacketQuery packet) {

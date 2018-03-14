@@ -23,9 +23,9 @@ import pl.socketbyte.opensectors.linker.util.NetworkManager;
 import pl.socketbyte.opensectors.linker.util.PlayerInfoHolder;
 import pl.socketbyte.opensectors.linker.util.Serializer;
 import pl.socketbyte.opensectors.linker.util.Util;
+import pl.socketbyte.opensectors.linker.util.reflection.PacketInjector;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.UUID;
 
 public class PlayerListeners implements Listener {
@@ -56,6 +56,16 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        try {
+            Object handle = player.getClass().getMethod("getHandle").invoke(player);
+
+            Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
+            PacketInjector.connections.put(player.getUniqueId(), playerConnection);
+        } catch (Exception e) {
+            StackTraceHandler.handle(PlayerListeners.class, e, StackTraceSeverity.WARNING);
+            OpenSectorLinker.log().warning("Action bar probably won't work for " + player.getName() + "!");
+        }
 
         event.setJoinMessage(null);
         PacketPlayerInfo packet = PlayerInfoHolder.getPlayerInfos().get(player.getUniqueId());

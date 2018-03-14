@@ -19,9 +19,6 @@ public class EventAdapter implements Listener {
 
         int lastServerId = Database.getPlayerSession(proxiedPlayer.getUniqueId());
 
-        if (lastServerId == -1)
-            lastServerId = 0;
-
         proxiedPlayer.connect(ServerManager.getServerInfo(lastServerId));
     }
 

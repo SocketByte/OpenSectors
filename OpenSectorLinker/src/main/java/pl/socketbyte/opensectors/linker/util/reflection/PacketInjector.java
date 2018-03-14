@@ -10,24 +10,15 @@ import java.util.WeakHashMap;
 
 public class PacketInjector {
 
-    private static final Map<UUID, Object> connections = new WeakHashMap<>();
+    public static final Map<UUID, Object> connections = new WeakHashMap<>();
     private static final Class<?> packetClass = Reflection.getCraftClass("Packet");
 
     public static void sendPacket(Player player, Object packet) {
         try {
-            Object playerConnection;
-            if (connections.containsKey(player.getUniqueId())) {
-                playerConnection = connections.get(player.getUniqueId());
-            }
-            else {
-                Object handle = player.getClass().getMethod("getHandle").invoke(player);
-
-                playerConnection = handle.getClass().getField("playerConnection").get(handle);
-                connections.put(player.getUniqueId(), playerConnection);
-            }
+            Object playerConnection = connections.get(player.getUniqueId());
             playerConnection.getClass().getMethod("sendPacket",
                     packetClass).invoke(playerConnection, packet);
-        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | NoSuchFieldException e) {
+        } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
             e.printStackTrace();
         }
     }

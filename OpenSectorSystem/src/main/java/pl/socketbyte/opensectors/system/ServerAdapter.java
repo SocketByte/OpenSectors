@@ -2,6 +2,7 @@ package pl.socketbyte.opensectors.system;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import net.md_5.bungee.api.ProxyServer;
 import pl.socketbyte.opensectors.system.api.ChannelManager;
 import pl.socketbyte.opensectors.system.api.LinkerConnection;
 import pl.socketbyte.opensectors.system.api.LinkerStorage;
@@ -90,18 +91,28 @@ public class ServerAdapter extends Listener {
         else if (object instanceof PacketQueryExecute) {
             PacketQueryExecute packet = (PacketQueryExecute) object;
 
-            NetworkManager.sendTCP(connection, Database.executeQuery(packet));
+            ProxyServer.getInstance().getScheduler().runAsync(OpenSectorSystem.getInstance(),
+                    () -> NetworkManager.sendTCP(connection, Database.executeQuery(packet)));
         }
         else if (object instanceof PacketQuery) {
             PacketQuery packet = (PacketQuery) object;
 
-            try {
+            ProxyServer.getInstance().getScheduler().runAsync(OpenSectorSystem.getInstance(), () -> {
                 PreparedStatement statement = Database.executeUpdate(packet);
-                statement.executeUpdate();
-                statement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+                try {
+                    statement.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    try {
+                        statement.close();
+                        statement.getConnection().close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         super.received(connection, object);
