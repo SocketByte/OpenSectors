@@ -17,11 +17,14 @@ public class Util {
                 || (mat == Material.GRAVEL) || (mat == Material.STONE) || (mat == Material.WATER);
     }
 
-    public static Location getValidLocation(Location loc) {
+    public static Location getValidLocation(Location loc, int y) {
         for (int i = 0; i < 256; i++) {
             loc.setY(loc.getWorld().getHighestBlockYAt(loc.getBlockX(), loc.getBlockZ()));
             if (isLocationValid(new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ()))) {
                 loc.add(0, 3, 0);
+                if (y > (loc.getBlockY() + 2))
+                    loc.setY(y);
+
                 return loc;
             }
         }

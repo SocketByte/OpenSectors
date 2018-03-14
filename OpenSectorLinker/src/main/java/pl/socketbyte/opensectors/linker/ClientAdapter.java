@@ -4,6 +4,8 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import pl.socketbyte.opensectors.linker.api.Callback;
 import pl.socketbyte.opensectors.linker.api.CallbackManager;
 import pl.socketbyte.opensectors.linker.api.ChannelManager;
@@ -72,6 +74,14 @@ public class ClientAdapter extends Listener {
                     world.setThundering(true);
                     break;
             }
+        }
+        else if (object instanceof PacketItemTransfer) {
+            PacketItemTransfer packet = (PacketItemTransfer)object;
+
+            Player player = Bukkit.getPlayer(UUID.fromString(packet.getPlayerUniqueId()));
+            ItemStack itemStack = packet.getItemStack();
+
+            player.getInventory().addItem(itemStack);
         }
 
         super.received(connection, object);

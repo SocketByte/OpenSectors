@@ -17,10 +17,6 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <repository>
-            <id>textapi-repo</id>
-            <url>https://dl.bintray.com/luca98/plugins/</url>
-        </repository>
     </repositories>
 
     <build>

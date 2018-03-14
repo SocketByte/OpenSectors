@@ -93,7 +93,7 @@ public class PlayerListeners implements Listener {
             player.getInventory().setContents(inventory);
         if (packet.getArmorContents() != null)
             player.getInventory().setArmorContents(armor);
-        player.teleport(Util.getValidLocation(destination));
+        player.teleport(Util.getValidLocation(destination, packet.getY()));
 
         if (potionEffects != null) {
             for (SerializablePotionEffect potionEffect : potionEffects) {

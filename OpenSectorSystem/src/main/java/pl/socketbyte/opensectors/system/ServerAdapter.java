@@ -3,6 +3,8 @@ package pl.socketbyte.opensectors.system;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import pl.socketbyte.opensectors.system.api.ChannelManager;
 import pl.socketbyte.opensectors.system.api.LinkerConnection;
 import pl.socketbyte.opensectors.system.api.LinkerStorage;
@@ -10,8 +12,10 @@ import pl.socketbyte.opensectors.system.api.PacketExtender;
 import pl.socketbyte.opensectors.system.logging.ByteInformator;
 import pl.socketbyte.opensectors.system.logging.ByteUtil;
 import pl.socketbyte.opensectors.system.packet.*;
+import pl.socketbyte.opensectors.system.packet.serializable.Receiver;
 import pl.socketbyte.opensectors.system.util.NetworkManager;
 import pl.socketbyte.opensectors.system.util.ServerManager;
+import pl.socketbyte.opensectors.system.util.Util;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -113,6 +117,43 @@ public class ServerAdapter extends Listener {
                     }
                 }
             });
+        }
+        else if (object instanceof PacketSendMessage) {
+            PacketSendMessage packet = (PacketSendMessage)object;
+            switch (packet.getReceiver()) {
+                case ALL:
+                    for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers())
+                        proxiedPlayer.sendMessage(packet.getMessageType(),
+                                new TextComponent(Util.fixColors(packet.getMessage())));
+                    break;
+                case PLAYER:
+                    ProxiedPlayer player = ProxyServer.getInstance().getPlayer(UUID.fromString(packet.getUniqueId()));
+                    player.sendMessage(packet.getMessageType(),
+                            new TextComponent(Util.fixColors(packet.getMessage())));
+                    break;
+            }
+        }
+        else if (object instanceof PacketItemTransfer) {
+            PacketItemTransfer packet = (PacketItemTransfer) object;
+            switch (packet.getReceiver()) {
+                case ALL:
+                    for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
+                        LinkerConnection linkerConnection = LinkerStorage.getLinkerByPlayer(proxiedPlayer);
+                        if (linkerConnection == null)
+                            return;
+                        packet.setReceiver(Receiver.PLAYER, proxiedPlayer.getUniqueId().toString());
+                        linkerConnection.sendTCP(packet);
+                    }
+                    break;
+                case PLAYER:
+                    ProxiedPlayer player = ProxyServer.getInstance().getPlayer(UUID.fromString(packet.getPlayerUniqueId()));
+                    LinkerConnection linkerConnection = LinkerStorage.getLinkerByPlayer(player);
+                    if (linkerConnection == null)
+                        return;
+                    linkerConnection.sendTCP(packet);
+                    break;
+            }
+
         }
 
         super.received(connection, object);

@@ -2,10 +2,9 @@ package pl.socketbyte.opensectors.system.packet.serializable;
 
 import java.io.Serializable;
 
-public enum Weather implements Serializable {
+public enum Receiver implements Serializable {
 
-    STORM,
-    RAIN,
-    CLEAR
+    PLAYER,
+    ALL
 
 }
