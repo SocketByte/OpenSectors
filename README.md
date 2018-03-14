@@ -107,17 +107,18 @@ ANY of location scaling systems or similar currently.
   "sectors": 9,      
   "portTCP": 23904,  
   "portUDP": 23905,
-  "bufferSize": 8192, // Buffer size, increase it to send larger packets
+  "bufferSize": 8192,
   "bukkitTimeFrequency": 500,
   "bukkitTimeIncremental": 10,
   "border": 1500,
+  "defaultChatFormat": "&7{PLAYER}&8: &f{MESSAGE}",
   "sqlController": {
     "host": "localhost",
     "port": 3306,
     "user": "root",
     "password": "",
     "database": "opensectors",
-    "useDefaultSql": true // Set it to false if you want to set your own SQL
+    "useDefaultSql": true 
   },
   "serverControllers": [
     {

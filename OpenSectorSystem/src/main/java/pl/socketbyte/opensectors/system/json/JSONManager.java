@@ -34,6 +34,7 @@ public enum JSONManager {
                     config.bukkitTimeFrequency = 500;
                     config.bukkitTimeIncremental = 10;
                     config.border = 1500;
+                    config.defaultChatFormat = "&7{PLAYER}&8: &f{MESSAGE}";
                     SQLController sqlController = new SQLController();
                     sqlController.host = "localhost";
                     sqlController.port = 3306;

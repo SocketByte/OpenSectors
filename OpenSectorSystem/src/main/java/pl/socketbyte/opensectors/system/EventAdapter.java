@@ -7,12 +7,13 @@ import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.md_5.bungee.event.EventPriority;
 import pl.socketbyte.opensectors.system.util.ServerManager;
 import pl.socketbyte.opensectors.system.util.Util;
 
 public class EventAdapter implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PostLoginEvent event) {
         ProxiedPlayer proxiedPlayer = event.getPlayer();
 
@@ -24,7 +25,8 @@ public class EventAdapter implements Listener {
         proxiedPlayer.connect(ServerManager.getServerInfo(lastServerId));
     }
 
-    @EventHandler
+    // Default chat handler, to override make your own ChatEvent and set higher priority
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerChat(ChatEvent event) {
         if (event.isCommand())
             return;
@@ -35,8 +37,11 @@ public class EventAdapter implements Listener {
 
         ProxiedPlayer sender = (ProxiedPlayer) event.getSender();
 
+        String format = Util.fixColors(OpenSectorSystem.getConfig().defaultChatFormat
+                .replace("{PLAYER}", sender.getDisplayName())
+                .replace("{MESSAGE}", event.getMessage()));
+
         for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers())
-            proxiedPlayer.sendMessage(new TextComponent(Util.fixColors("&7" + sender.getName() + "&8: &f" +
-                    event.getMessage())));
+            proxiedPlayer.sendMessage(new TextComponent(format));
     }
 }
