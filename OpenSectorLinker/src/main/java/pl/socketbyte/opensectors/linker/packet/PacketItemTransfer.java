@@ -1,13 +1,13 @@
 package pl.socketbyte.opensectors.linker.packet;
 
-import org.bukkit.inventory.ItemStack;
-import pl.socketbyte.opensectors.linker.packet.serializable.Receiver;
+import pl.socketbyte.opensectors.linker.packet.serializable.SerializableItem;
+import pl.socketbyte.opensectors.linker.packet.types.Receiver;
 
 public class PacketItemTransfer extends Packet {
 
     private Receiver receiver;
     private String playerUniqueId;
-    private ItemStack itemStack;
+    private SerializableItem itemStack;
 
     public PacketItemTransfer() {
 
@@ -34,11 +34,11 @@ public class PacketItemTransfer extends Packet {
         this.playerUniqueId = playerUniqueId;
     }
 
-    public ItemStack getItemStack() {
+    public SerializableItem getItemStack() {
         return itemStack;
     }
 
-    public void setItemStack(ItemStack itemStack) {
+    public void setItemStack(SerializableItem itemStack) {
         this.itemStack = itemStack;
     }
 

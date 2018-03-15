@@ -6,6 +6,7 @@ import com.esotericsoftware.minlog.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.socketbyte.opensectors.linker.api.IPacketAdapter;
 import pl.socketbyte.opensectors.linker.cryptography.Cryptography;
@@ -18,18 +19,17 @@ import pl.socketbyte.opensectors.linker.listeners.SectorProtectionListeners;
 import pl.socketbyte.opensectors.linker.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.linker.logging.StackTraceSeverity;
 import pl.socketbyte.opensectors.linker.packet.*;
-import pl.socketbyte.opensectors.linker.packet.serializable.SerializablePotionEffect;
-import pl.socketbyte.opensectors.linker.packet.serializable.SerializableResultSet;
-import pl.socketbyte.opensectors.linker.packet.serializable.Weather;
+import pl.socketbyte.opensectors.linker.packet.serializable.*;
+import pl.socketbyte.opensectors.linker.packet.types.MessageType;
+import pl.socketbyte.opensectors.linker.packet.types.Receiver;
+import pl.socketbyte.opensectors.linker.packet.types.Weather;
 import pl.socketbyte.opensectors.linker.sector.SectorManager;
+import pl.socketbyte.opensectors.linker.util.reflection.PacketInjector;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class OpenSectorLinker extends JavaPlugin {
@@ -162,6 +162,12 @@ public class OpenSectorLinker extends JavaPlugin {
         kryo.register(PacketUpdatePlayerSession.class);
         kryo.register(Weather.class);
         kryo.register(PacketWeatherInfo.class);
+        kryo.register(Receiver.class);
+        kryo.register(MessageType.class);
+        kryo.register(PacketSendMessage.class);
+        kryo.register(LinkedHashMap.class);
+        kryo.register(SerializableItem.class);
+        kryo.register(PacketItemTransfer.class);
 
         logger.info("Registering the client adapter...");
         // Registering the client adapter
@@ -176,6 +182,11 @@ public class OpenSectorLinker extends JavaPlugin {
         packet.setPassword(Cryptography.sha256(getConfig().getString("auth-password")));
         packet.setServerId(OpenSectorLinker.getServerId());
         client.sendTCP(packet);
+    }
+
+    @Override
+    public void onDisable() {
+        client.stop();
     }
 
     public static void ready() {

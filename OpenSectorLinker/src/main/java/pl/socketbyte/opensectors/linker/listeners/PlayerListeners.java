@@ -57,16 +57,6 @@ public class PlayerListeners implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        try {
-            Object handle = player.getClass().getMethod("getHandle").invoke(player);
-
-            Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-            PacketInjector.connections.put(player.getUniqueId(), playerConnection);
-        } catch (Exception e) {
-            StackTraceHandler.handle(PlayerListeners.class, e, StackTraceSeverity.WARNING);
-            OpenSectorLinker.log().warning("Action bar probably won't work for " + player.getName() + "!");
-        }
-
         event.setJoinMessage(null);
         PacketPlayerInfo packet = PlayerInfoHolder.getPlayerInfos().get(player.getUniqueId());
 

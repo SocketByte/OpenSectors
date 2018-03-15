@@ -1,6 +1,6 @@
 package pl.socketbyte.opensectors.linker.packet;
 
-import pl.socketbyte.opensectors.linker.packet.serializable.Weather;
+import pl.socketbyte.opensectors.linker.packet.types.Weather;
 
 public class PacketWeatherInfo extends Packet {
 

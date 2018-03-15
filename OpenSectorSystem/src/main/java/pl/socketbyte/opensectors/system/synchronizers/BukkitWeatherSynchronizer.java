@@ -1,10 +1,9 @@
 package pl.socketbyte.opensectors.system.synchronizers;
 
 import pl.socketbyte.opensectors.system.packet.PacketWeatherInfo;
-import pl.socketbyte.opensectors.system.packet.serializable.Weather;
+import pl.socketbyte.opensectors.system.packet.types.Weather;
 import pl.socketbyte.opensectors.system.util.NetworkManager;
 
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class BukkitWeatherSynchronizer implements Runnable {

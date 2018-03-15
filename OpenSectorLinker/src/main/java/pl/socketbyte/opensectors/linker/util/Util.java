@@ -5,10 +5,20 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Util {
 
     public static String fixColors(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
+    }
+
+    public static List<String> fixColors(List<String> texts) {
+        List<String> strings = new ArrayList<>();
+        for (String str : texts)
+            strings.add(Util.fixColors(str));
+        return strings;
     }
 
     private static boolean isLocationValid(Location loc) {

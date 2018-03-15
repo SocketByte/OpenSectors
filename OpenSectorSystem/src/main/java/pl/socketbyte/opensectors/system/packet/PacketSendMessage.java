@@ -1,13 +1,14 @@
-package pl.socketbyte.opensectors.system.packet;
+package pl.socketbyte.opensectors.linker.packet;
 
-import net.md_5.bungee.api.ChatMessageType;
-import pl.socketbyte.opensectors.system.packet.serializable.Receiver;
+import pl.socketbyte.opensectors.system.packet.Packet;
+import pl.socketbyte.opensectors.system.packet.types.MessageType;
+import pl.socketbyte.opensectors.system.packet.types.Receiver;
 
 public class PacketSendMessage extends Packet {
 
     private Receiver receiver;
     private String playerUniqueId;
-    private ChatMessageType messageType;
+    private MessageType messageType;
     private String message;
 
     public PacketSendMessage() {
@@ -43,16 +44,16 @@ public class PacketSendMessage extends Packet {
         this.message = message;
     }
 
-    public void setMessage(ChatMessageType messageType, String message) {
+    public void setMessage(MessageType messageType, String message) {
         this.messageType = messageType;
         this.message = message;
     }
 
-    public ChatMessageType getMessageType() {
+    public MessageType getMessageType() {
         return messageType;
     }
 
-    public void setMessageType(ChatMessageType messageType) {
+    public void setMessageType(MessageType messageType) {
         this.messageType = messageType;
     }
 

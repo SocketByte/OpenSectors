@@ -11,7 +11,7 @@ import pl.socketbyte.opensectors.linker.api.CallbackManager;
 import pl.socketbyte.opensectors.linker.api.ChannelManager;
 import pl.socketbyte.opensectors.linker.api.PacketExtender;
 import pl.socketbyte.opensectors.linker.packet.*;
-import pl.socketbyte.opensectors.linker.packet.serializable.Weather;
+import pl.socketbyte.opensectors.linker.packet.types.Weather;
 import pl.socketbyte.opensectors.linker.util.PlayerInfoHolder;
 
 import java.util.UUID;
@@ -79,7 +79,7 @@ public class ClientAdapter extends Listener {
             PacketItemTransfer packet = (PacketItemTransfer)object;
 
             Player player = Bukkit.getPlayer(UUID.fromString(packet.getPlayerUniqueId()));
-            ItemStack itemStack = packet.getItemStack();
+            ItemStack itemStack = packet.getItemStack().deserialize();
 
             player.getInventory().addItem(itemStack);
         }
