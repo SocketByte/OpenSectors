@@ -2,6 +2,7 @@ package pl.socketbyte.opensectors.linker.util.reflection;
 
 import pl.socketbyte.opensectors.linker.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.linker.util.reflection.v1_11.ActionBar1_11;
+import pl.socketbyte.opensectors.linker.util.reflection.v1_12.ActionBar1_12;
 import pl.socketbyte.opensectors.linker.util.reflection.v1_8.ActionBar1_8;
 
 public class ProtocolManager {
@@ -17,11 +18,12 @@ public class ProtocolManager {
             }
             if (version.contains("9")
                     || version.contains("10")
-                    || version.contains("11")
-                    || version.contains("12")
-                    || version.contains("13")) {
+                    || version.contains("11")) {
                 actionBar = new ActionBar1_11();
             }
+            else if (version.contains("12")
+                    || version.contains("13"))
+                actionBar = new ActionBar1_12();
             else if (version.contains("8"))
                 actionBar = new ActionBar1_8();
 

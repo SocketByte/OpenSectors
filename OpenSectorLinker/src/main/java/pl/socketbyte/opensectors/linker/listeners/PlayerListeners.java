@@ -70,25 +70,25 @@ public class PlayerListeners implements Listener {
         if (packet == null)
             return;
 
-        ItemStack[] inventory = new ItemStack[0];
-        ItemStack[] armor = new ItemStack[0];
         try {
             if (packet.getInventory() != null)
-                inventory = Serializer.deserializeInventory(packet.getInventory());
+                player.getInventory().setContents(
+                        Serializer.deserializeInventory(packet.getInventory()));
 
             if (packet.getArmorContents() != null)
-                armor = Serializer.deserializeInventory(packet.getArmorContents());
+                player.getInventory().setArmorContents(
+                        Serializer.deserializeInventory(packet.getArmorContents()));
+
+            if (packet.getEnderContents() != null)
+                player.getEnderChest().setContents(
+                        Serializer.deserializeInventory(packet.getEnderContents()));
+
         } catch (IOException e) {
             StackTraceHandler.handle(OpenSectorLinker.class, e, StackTraceSeverity.ERROR);
         }
         SerializablePotionEffect[] potionEffects = packet.getPotionEffects();
         Location destination = new Location(player.getWorld(), packet.getX(), packet.getY(), packet.getZ(),
                 packet.getYaw(), packet.getPitch());
-
-        if (packet.getInventory() != null)
-            player.getInventory().setContents(inventory);
-        if (packet.getArmorContents() != null)
-            player.getInventory().setArmorContents(armor);
         player.teleport(Util.getValidLocation(destination, packet.getY()));
 
         if (potionEffects != null) {

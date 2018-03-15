@@ -91,6 +91,7 @@ public class PlayerMoveListener implements Listener {
             packetPlayerInfo.setPlayerUniqueId(player.getUniqueId().toString());
             packetPlayerInfo.setInventory(Serializer.serializeInventory(player.getInventory().getContents()));
             packetPlayerInfo.setArmorContents(Serializer.serializeInventory(player.getInventory().getArmorContents()));
+            packetPlayerInfo.setEnderContents(Serializer.serializeInventory(player.getEnderChest().getContents()));
 
             Collection<PotionEffect> activePotionEffects = player.getActivePotionEffects();
             SerializablePotionEffect[] potionEffects = new SerializablePotionEffect[activePotionEffects.size()];

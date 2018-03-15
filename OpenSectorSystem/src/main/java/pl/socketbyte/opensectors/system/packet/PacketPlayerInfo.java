@@ -9,6 +9,7 @@ public class PacketPlayerInfo extends Packet {
     private String playerUniqueId;
     private String inventory;
     private String armorContents;
+    private String enderContents;
     private int x;
     private int y;
     private int z;
@@ -53,6 +54,14 @@ public class PacketPlayerInfo extends Packet {
 
     public String getArmorContents() {
         return armorContents;
+    }
+
+    public String getEnderContents() {
+        return enderContents;
+    }
+
+    public void setEnderContents(String enderContents) {
+        this.enderContents = enderContents;
     }
 
     public void setArmorContents(String armorContents) {
@@ -161,6 +170,7 @@ public class PacketPlayerInfo extends Packet {
                 "playerUniqueId='" + playerUniqueId + '\'' +
                 ", inventory='" + inventory + '\'' +
                 ", armorContents='" + armorContents + '\'' +
+                ", enderContents='" + enderContents + '\'' +
                 ", x=" + x +
                 ", y=" + y +
                 ", z=" + z +
