@@ -1,13 +1,12 @@
 package pl.socketbyte.opensectors.linker.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -29,6 +28,13 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class PlayerListeners implements Listener {
+
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        // Works? Then don't touch.
+        Bukkit.getPluginManager().callEvent(
+                new PlayerMoveEvent(event.getPlayer(), event.getFrom(), event.getTo()));
+    }
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
