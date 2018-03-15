@@ -9,8 +9,8 @@ import pl.socketbyte.opensectors.linker.util.reflection.Reflection;
 import java.lang.reflect.InvocationTargetException;
 
 public class ActionBar1_12 implements ActionBar {
-    private static final Class<Enum> CHAT_MESSAGE_TYPE =
-            (Class<Enum>) Reflection.getCraftClass("ChatMessageType");
+    private static final Class<?> CHAT_MESSAGE_TYPE =
+           Reflection.getCraftClass("ChatMessageType");
     private static final Class<?> ICHAT_BASE_COMPONENT =
             Reflection.getCraftClass("IChatBaseComponent");
     private static final Class<?> CHAT_COMPONENT_TEXT =
@@ -33,14 +33,15 @@ public class ActionBar1_12 implements ActionBar {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Object getPacket(String content) {
         try {
             Object baseComponent = CHAT_COMPONENT_TEXT
                     .getConstructor(String.class)
                     .newInstance(Util.fixColors(content));
             return PACKET_PLAY_OUT_CHAT
-                    .getConstructor(ICHAT_BASE_COMPONENT, Byte.TYPE)
-                    .newInstance(baseComponent, Enum.valueOf(CHAT_MESSAGE_TYPE, "ACTION_BAR"));
+                    .getConstructor(ICHAT_BASE_COMPONENT, CHAT_MESSAGE_TYPE)
+                    .newInstance(baseComponent, Enum.valueOf((Class<Enum>)CHAT_MESSAGE_TYPE, "ACTION_BAR"));
         } catch (NoSuchMethodException
                 | InstantiationException
                 | InvocationTargetException
