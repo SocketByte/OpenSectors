@@ -8,6 +8,8 @@ import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.md_5.bungee.event.EventPriority;
+import pl.socketbyte.opensectors.system.api.LinkerStorage;
+import pl.socketbyte.opensectors.system.json.controllers.ServerController;
 import pl.socketbyte.opensectors.system.util.ServerManager;
 import pl.socketbyte.opensectors.system.util.Util;
 
@@ -18,6 +20,11 @@ public class EventAdapter implements Listener {
         ProxiedPlayer proxiedPlayer = event.getPlayer();
 
         int lastServerId = Database.getPlayerSession(proxiedPlayer.getUniqueId());
+        ServerController controller = OpenSectorSystem.getServerController(lastServerId);
+        if (controller == null)
+            return;
+        if (controller.name.equals(proxiedPlayer.getServer().getInfo().getName()))
+            return;
 
         proxiedPlayer.connect(ServerManager.getServerInfo(lastServerId));
     }

@@ -33,7 +33,6 @@ public class ActionBar1_12 implements ActionBar {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Object getPacket(String content) {
         try {
             Object baseComponent = CHAT_COMPONENT_TEXT
