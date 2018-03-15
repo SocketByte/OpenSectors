@@ -41,7 +41,7 @@ public class ActionBar1_12 implements ActionBar {
                     .newInstance(Util.fixColors(content));
             return PACKET_PLAY_OUT_CHAT
                     .getConstructor(ICHAT_BASE_COMPONENT, CHAT_MESSAGE_TYPE)
-                    .newInstance(baseComponent, Enum.valueOf((Class<Enum>)CHAT_MESSAGE_TYPE, "ACTION_BAR"));
+                    .newInstance(baseComponent, CHAT_MESSAGE_TYPE.getEnumConstants()[2]);
         } catch (NoSuchMethodException
                 | InstantiationException
                 | InvocationTargetException
