@@ -518,6 +518,40 @@ More about `HikariCP` here:
 
 https://github.com/brettwooldridge/HikariCP
 
+## Additional packets
+##### PacketItemTransfer *(from 1.1)*
+```java
+// Create packet
+PacketItemTransfer packet = new PacketItemTransfer();
+// Set receiver (all == every player on every sector)
+packet.setReceiver(Receiver.ALL);
+// Set itemstack as SerializableItem
+packet.setItemStack(new SerializableItem(new ItemStack(...)));
+SectorAPI.sendTCP(packet);
+```
+##### PacketSendMessage *(from 1.1)*
+```java
+// Create packet
+PacketSendMessage packet = new PacketSendMessage();
+// Set receiver (player == only one player)
+packet.setReceiver(Receiver.PLAYER, "uniqueId");
+// Set message and it's type
+packet.setMessage(MessageType.ACTION_BAR, "&6&lHello, World!");
+SectorAPI.sendTCP(message);
+```
+##### PacketPlayerTransferRequest *(from 1.0)*
+```java
+PacketPlayerTransferRequest packet = new PacketPlayerTransferRequest();
+// Set the player
+packet.setPlayerUniqueId("uniqueId");
+// Set player info (not required)
+packet.setPlayerInfo(new PacketPlayerInfo(player));
+// Set server id
+packet.setServerId(1);
+```
+
+More to come soon!
+
 ## Contribution
 Yes! Of course you can contribute in `OpenSectors`
 

@@ -1,8 +1,12 @@
 package pl.socketbyte.opensectors.linker.packet;
 
+import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 import pl.socketbyte.opensectors.linker.packet.serializable.SerializablePotionEffect;
+import pl.socketbyte.opensectors.linker.util.Serializer;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 public class PacketPlayerInfo extends Packet {
 
@@ -26,6 +30,49 @@ public class PacketPlayerInfo extends Packet {
 
     public PacketPlayerInfo() {
 
+    }
+
+    public PacketPlayerInfo(Player player) {
+        new PacketPlayerInfo(player,
+                player.getLocation().getBlockX(),
+                player.getLocation().getBlockZ());
+    }
+
+    public PacketPlayerInfo(Player player, int newX, int newZ) {
+        setPlayerUniqueId(player.getUniqueId().toString());
+        setInventory(Serializer.serializeInventory(player.getInventory().getContents()));
+        setArmorContents(Serializer.serializeInventory(player.getInventory().getArmorContents()));
+        setEnderContents(Serializer.serializeInventory(player.getEnderChest().getContents()));
+
+        Collection<PotionEffect> activePotionEffects = player.getActivePotionEffects();
+        SerializablePotionEffect[] potionEffects = new SerializablePotionEffect[activePotionEffects.size()];
+        int i = 0;
+        for (PotionEffect effect : activePotionEffects) {
+            SerializablePotionEffect potionEffect = new SerializablePotionEffect();
+
+            potionEffect.setPotionEffectType(effect.getType().getName());
+            potionEffect.setAmplifier(effect.getAmplifier());
+            potionEffect.setDuration(effect.getDuration());
+
+            potionEffects[i] = potionEffect;
+            i++;
+        }
+
+        setPotionEffects(potionEffects);
+
+        setX(newX);
+        setY(player.getLocation().getBlockY());
+        setZ(newZ);
+        setPitch(player.getLocation().getPitch());
+        setYaw(player.getLocation().getYaw());
+
+        setHealth(player.getHealth());
+        setFood(player.getFoodLevel());
+        setExp(player.getExp());
+        setLevel(player.getLevel());
+        setFly(player.getAllowFlight());
+        setGameMode(player.getGameMode().name());
+        setHeldSlot(player.getInventory().getHeldItemSlot());
     }
 
     public String getPlayerUniqueId() {
