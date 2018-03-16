@@ -1,6 +1,9 @@
 package pl.socketbyte.opensectors.linker.api;
 
 import pl.socketbyte.opensectors.linker.OpenSectorLinker;
+import pl.socketbyte.opensectors.linker.api.callback.Callback;
+import pl.socketbyte.opensectors.linker.api.callback.CallbackHandler;
+import pl.socketbyte.opensectors.linker.packet.Packet;
 import pl.socketbyte.opensectors.linker.packet.PacketQuery;
 import pl.socketbyte.opensectors.linker.packet.PacketQueryExecute;
 import pl.socketbyte.opensectors.linker.util.NetworkManager;
@@ -42,25 +45,6 @@ public class SectorAPI {
     }
 
     /**
-     * Sends a query
-     * @param query Query packet
-     */
-    public static void sendQuery(PacketQuery query) {
-        sendTCP(query);
-    }
-
-    /**
-     * Sends a query with a callback
-     * @param query Query packet
-     * @param callback Callback interface
-     */
-    public static void sendQuery(PacketQueryExecute query, Callback callback) {
-        sendTCP(query);
-
-        CallbackManager.getCallbackMap().put(query.getUniqueId(), callback);
-    }
-
-    /**
      * Registers additional class which you can use to send through proxy and linker
      * @param clazz External class which will be used in one of your Packet classes
      */
@@ -72,7 +56,7 @@ public class SectorAPI {
      * Sends an TCP packet to proxy
      * @param packet Object which extends Packet class, containing serializable fields and methods
      */
-    public static void sendTCP(Object packet) {
+    public static <T> void sendTCP(T packet) {
         NetworkManager.sendTCP(packet);
     }
 
@@ -80,8 +64,24 @@ public class SectorAPI {
      * Sends an UDP packet to proxy
      * @param packet Object which extends Packet class, containing serializable fields and methods
      */
-    public static void sendUDP(Object packet) {
+    public static <T> void sendUDP(T packet) {
         NetworkManager.sendUDP(packet);
+    }
+
+    /**
+     * Sends an TCP packet to proxy
+     * @param packet Object which extends Packet class, containing serializable fields and methods
+     */
+    public static <T> void sendTCP(T packet, Callback<T> callback) {
+        CallbackHandler.make((Packet) packet, callback);
+    }
+
+    /**
+     * Sends an UDP packet to proxy
+     * @param packet Object which extends Packet class, containing serializable fields and methods
+     */
+    public static <T> void sendUDP(T packet, Callback<T> callback) {
+        CallbackHandler.make((Packet) packet, callback);
     }
 
 }

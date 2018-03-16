@@ -1,26 +1,22 @@
 package pl.socketbyte.opensectors.linker.listeners;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.potion.PotionEffect;
 import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 import pl.socketbyte.opensectors.linker.packet.PacketPlayerInfo;
-import pl.socketbyte.opensectors.linker.packet.PacketPlayerTransferRequest;
-import pl.socketbyte.opensectors.linker.packet.serializable.SerializablePotionEffect;
+import pl.socketbyte.opensectors.linker.packet.PacketPlayerTransfer;
 import pl.socketbyte.opensectors.linker.sector.Sector;
 import pl.socketbyte.opensectors.linker.sector.SectorManager;
 import pl.socketbyte.opensectors.linker.util.*;
 import pl.socketbyte.opensectors.linker.util.reflection.ProtocolManager;
 
 import java.text.DecimalFormat;
-import java.util.*;
 
 public class PlayerMoveListener implements Listener {
 
@@ -83,7 +79,7 @@ public class PlayerMoveListener implements Listener {
 
             PlayerTransferHolder.getTransfering().add(player.getUniqueId());
 
-            PacketPlayerTransferRequest packet = new PacketPlayerTransferRequest();
+            PacketPlayerTransfer packet = new PacketPlayerTransfer();
             packet.setPlayerUniqueId(player.getUniqueId().toString());
             packet.setServerId(in.getServerController().id);
 

@@ -7,11 +7,17 @@ import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Util {
 
     public static String fixColors(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
+    }
+
+    public static long getRandomLong(long min, long max) {
+        return ThreadLocalRandom.current().nextLong(min, max);
     }
 
     public static List<String> fixColors(List<String> texts) {

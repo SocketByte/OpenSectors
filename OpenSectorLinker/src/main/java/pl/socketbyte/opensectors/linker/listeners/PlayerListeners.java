@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.socketbyte.opensectors.linker.OpenSectorLinker;
@@ -15,14 +14,13 @@ import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 import pl.socketbyte.opensectors.linker.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.linker.logging.StackTraceSeverity;
 import pl.socketbyte.opensectors.linker.packet.PacketPlayerInfo;
-import pl.socketbyte.opensectors.linker.packet.PacketPlayerTransferRequest;
+import pl.socketbyte.opensectors.linker.packet.PacketPlayerTransfer;
 import pl.socketbyte.opensectors.linker.packet.PacketUpdatePlayerSession;
 import pl.socketbyte.opensectors.linker.packet.serializable.SerializablePotionEffect;
 import pl.socketbyte.opensectors.linker.util.NetworkManager;
 import pl.socketbyte.opensectors.linker.util.PlayerInfoHolder;
 import pl.socketbyte.opensectors.linker.util.Serializer;
 import pl.socketbyte.opensectors.linker.util.Util;
-import pl.socketbyte.opensectors.linker.util.reflection.PacketInjector;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -40,7 +38,7 @@ public class PlayerListeners implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
-        PacketPlayerTransferRequest transferRequest = new PacketPlayerTransferRequest();
+        PacketPlayerTransfer transferRequest = new PacketPlayerTransfer();
         transferRequest.setServerId(0);
         transferRequest.setPlayerUniqueId(player.getUniqueId().toString());
 

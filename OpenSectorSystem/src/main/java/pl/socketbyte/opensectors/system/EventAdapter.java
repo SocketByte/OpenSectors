@@ -19,11 +19,9 @@ public class EventAdapter implements Listener {
     public void onJoin(PostLoginEvent event) {
         ProxiedPlayer proxiedPlayer = event.getPlayer();
 
+
         int lastServerId = Database.getPlayerSession(proxiedPlayer.getUniqueId());
-        ServerController controller = OpenSectorSystem.getServerController(lastServerId);
-        if (controller == null)
-            return;
-        if (controller.name.equals(proxiedPlayer.getServer().getInfo().getName()))
+        if (lastServerId == 0)
             return;
 
         proxiedPlayer.connect(ServerManager.getServerInfo(lastServerId));

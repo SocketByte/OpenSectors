@@ -1,4 +1,4 @@
-# OpenSectors ![version](https://img.shields.io/badge/version-1.1-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
+# OpenSectors ![version](https://img.shields.io/badge/version-1.2-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
 Join our Discord server! 
 
 [![https://discord.gg/bCuhCN](https://i.imgur.com/ZEzqv2h.png)](https://discord.gg/bCuhCN)
@@ -252,7 +252,7 @@ Add this code to your maven dependencies.
         <dependency>
             <groupId>pl.socketbyte</groupId>
             <artifactId>OpenSectorLinker</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -272,7 +272,7 @@ or this code when you make plugin for system:
         <dependency>
             <groupId>pl.socketbyte</groupId>
             <artifactId>OpenSectorSystem</artifactId>
-            <version>1.1</version>
+            <version>1.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -364,7 +364,7 @@ replacements.put(2, "even nicer value");
 ... and apply & send them!
 ```java
 query.setReplacements(replacements);
-SectorAPI.sendQuery(query);
+SectorAPI.sendTCP(query);
 ```
 Congratulations, you executed a query on the system side
 and now your values are in the global database! Amazing!
@@ -383,7 +383,7 @@ queryExecute.setReplacements(replacements);
 ```
 ... and!
 ```java
-SectorAPI.sendQuery(queryExecute, packetQueryExecute -> {
+SectorAPI.sendTCP(queryExecute, packetQueryExecute -> {
     SerializableResultSet resultSet = packetQueryExecute.getResultSet();
     while (resultSet.next()) {
         System.out.println("Received from SQL:  " + resultSet.getString(0)
@@ -518,6 +518,28 @@ More about `HikariCP` here:
 
 https://github.com/brettwooldridge/HikariCP
 
+## Callback system
+It's easy to use system for sending, and instantly receiving packets (and doing something with them)
+It's based on a simple `Callback<T>` and `CompletableFuture<T>` which makes it really convinient.
+
+Basic usage:
+```java
+PacketPlayerState state = new PacketPlayerState();
+state.setPlayerName("...AnyPlayerName...");
+SectorAPI.sendTCP(state, new Callback<PacketPlayerState>() {
+    @Override
+    public void execute(PacketPlayerState packetPlayerState) {
+        // Your callback (information from the proxy)
+        
+        System.out.println("Sector: " + packetPlayerState.getServerId());
+        System.out.println("Is Online: " + packetPlayerState.isOnline());
+        System.out.println("UniqueID: " + packetPlayerState.getPlayerUniqueId());
+    }
+});
+```
+This system also works on `PacketQueryExecute`.
+More packets based on callback system to come soon!
+
 ## Additional packets
 ##### PacketItemTransfer *(from 1.1)*
 ```java
@@ -527,7 +549,6 @@ PacketItemTransfer packet = new PacketItemTransfer();
 packet.setReceiver(Receiver.ALL);
 // Set itemstack as SerializableItem
 packet.setItemStack(new SerializableItem(new ItemStack(...)));
-SectorAPI.sendTCP(packet);
 ```
 ##### PacketSendMessage *(from 1.1)*
 ```java
@@ -537,17 +558,34 @@ PacketSendMessage packet = new PacketSendMessage();
 packet.setReceiver(Receiver.PLAYER, "uniqueId");
 // Set message and it's type
 packet.setMessage(MessageType.ACTION_BAR, "&6&lHello, World!");
-SectorAPI.sendTCP(message);
 ```
-##### PacketPlayerTransferRequest *(from 1.0)*
+##### PacketPlayerTransfer *(from 1.0)*
 ```java
-PacketPlayerTransferRequest packet = new PacketPlayerTransferRequest();
+PacketPlayerTransfer packet = new PacketPlayerTransfer();
 // Set the player
 packet.setPlayerUniqueId("uniqueId");
 // Set player info (not required)
 packet.setPlayerInfo(new PacketPlayerInfo(player));
 // Set server id
 packet.setServerId(1);
+```
+##### PacketPlayerTeleport *(from 1.2)*
+```java
+PacketPlayerTeleport packet = new PacketPlayerTeleport();
+// Set player
+packet.setPlayerUniqueId("uniqueId");
+// Set target (optional)
+packet.setTargetUniqueId("uniqueId");
+// Or set coords
+packet.setLocation(250, 70, 250);
+```
+##### PacketPlayerState *(from 1.2)*
+```java
+PacketPlayerState packet = new PacketPlayerState();
+packet.setPlayerName("...");
+SectorAPI.sendTCP(packet, packetPlayerState -> {
+    // do what you want with the callback
+});
 ```
 
 More to come soon!

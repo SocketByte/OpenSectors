@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class Database {
 
-    protected static void setPlayerSession(UUID uniqueId, int serverId) {
+    public static void setPlayerSession(UUID uniqueId, int serverId) {
         if (getPlayerSession(uniqueId) == -1) {
             insertPlayerSession(uniqueId, serverId);
             return;
@@ -25,8 +25,7 @@ public class Database {
         updatePlayerSession(uniqueId, serverId);
     }
 
-    protected static void insertPlayerSession(UUID uniqueId, int serverId) {
-        // Not sure if it is safe to async this, probably will make that an option in the future.
+    public static void insertPlayerSession(UUID uniqueId, int serverId) {
         ProxyServer.getInstance().getScheduler().runAsync(OpenSectorSystem.getInstance(), () -> {
             Connection connection = HikariManager.INSTANCE.getConnection();
             try {
@@ -48,7 +47,7 @@ public class Database {
         });
     }
 
-    protected static void updatePlayerSession(UUID uniqueId, int serverId) {
+    public static void updatePlayerSession(UUID uniqueId, int serverId) {
         ProxyServer.getInstance().getScheduler().runAsync(OpenSectorSystem.getInstance(), () -> {
             Connection connection = HikariManager.INSTANCE.getConnection();
             try {
@@ -71,7 +70,7 @@ public class Database {
         });
     }
 
-    protected static int getPlayerSession(UUID uniqueId) {
+    public static int getPlayerSession(UUID uniqueId) {
         Connection connection = HikariManager.INSTANCE.getConnection();
         try {
             PreparedStatement statement = connection.prepareStatement(

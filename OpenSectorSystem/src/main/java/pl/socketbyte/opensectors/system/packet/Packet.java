@@ -1,33 +1,27 @@
 package pl.socketbyte.opensectors.system.packet;
 
+import pl.socketbyte.opensectors.system.util.Util;
+
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Packet implements Serializable {
 
     private static final long serialVersionUID = -5395761249179523853L;
 
-    private final long time;
-    private final String uniqueId;
+    private long callbackId;
 
     public Packet() {
-        this.time = System.currentTimeMillis();
-        this.uniqueId = UUID.randomUUID().toString();
+        this.callbackId = Util.getRandomLong(Long.MIN_VALUE, Long.MAX_VALUE);
     }
 
-    public long getTime() {
-        return time;
-    }
-
-    public String getUniqueId() {
-        return uniqueId;
+    public long getCallbackId() {
+        return callbackId;
     }
 
     @Override
     public String toString() {
         return "Packet{" +
-                "time=" + time +
-                ", uniqueId='" + uniqueId + '\'' +
+                "callbackId=" + callbackId +
                 '}';
     }
 }

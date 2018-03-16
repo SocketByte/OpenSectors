@@ -1,12 +1,12 @@
 package pl.socketbyte.opensectors.linker.packet;
 
-public class PacketPlayerTransferRequest extends Packet {
+public class PacketPlayerTransfer extends Packet {
 
     private String playerUniqueId;
     private int serverId;
     private PacketPlayerInfo playerInfo;
 
-    public PacketPlayerTransferRequest() {
+    public PacketPlayerTransfer() {
 
     }
 
@@ -36,7 +36,7 @@ public class PacketPlayerTransferRequest extends Packet {
 
     @Override
     public String toString() {
-        return "PacketPlayerTransferRequest{" +
+        return "PacketPlayerTransfer{" +
                 "playerUniqueId='" + playerUniqueId + '\'' +
                 ", serverId=" + serverId +
                 ", playerInfo=" + playerInfo +

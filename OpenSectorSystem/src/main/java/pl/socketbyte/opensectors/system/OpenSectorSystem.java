@@ -10,6 +10,16 @@ import pl.socketbyte.opensectors.system.api.IPacketAdapter;
 import pl.socketbyte.opensectors.system.cryptography.Cryptography;
 import pl.socketbyte.opensectors.system.database.HikariManager;
 import pl.socketbyte.opensectors.system.database.basic.HikariMySQL;
+import pl.socketbyte.opensectors.system.adapters.CustomPayloadListener;
+import pl.socketbyte.opensectors.system.adapters.LinkerAuthListener;
+import pl.socketbyte.opensectors.system.adapters.player.PlayerSessionListener;
+import pl.socketbyte.opensectors.system.adapters.player.PlayerStateListener;
+import pl.socketbyte.opensectors.system.adapters.player.PlayerTeleportListener;
+import pl.socketbyte.opensectors.system.adapters.player.PlayerTransferListener;
+import pl.socketbyte.opensectors.system.adapters.query.QueryExecuteListener;
+import pl.socketbyte.opensectors.system.adapters.query.QueryListener;
+import pl.socketbyte.opensectors.system.adapters.tool.ItemTransferListener;
+import pl.socketbyte.opensectors.system.adapters.tool.SendMessageListener;
 import pl.socketbyte.opensectors.system.packet.serializable.*;
 import pl.socketbyte.opensectors.system.packet.types.MessageType;
 import pl.socketbyte.opensectors.system.packet.types.Receiver;
@@ -61,7 +71,7 @@ public class OpenSectorSystem extends Plugin {
         return instance;
     }
 
-    protected static String getPassword() {
+    public static String getPassword() {
         return Cryptography.sha256(config.password);
     }
 
@@ -138,7 +148,7 @@ public class OpenSectorSystem extends Plugin {
         kryo.register(ServerController[].class);
         kryo.register(SQLController.class);
         kryo.register(IPacketAdapter.class);
-        kryo.register(PacketPlayerTransferRequest.class);
+        kryo.register(PacketPlayerTransfer.class);
         kryo.register(PacketLinkerAuthRequest.class);
         kryo.register(PacketCustomPayload.class);
         kryo.register(JSONConfig.class);
@@ -165,9 +175,21 @@ public class OpenSectorSystem extends Plugin {
         kryo.register(LinkedHashMap.class);
         kryo.register(SerializableItem.class);
         kryo.register(PacketItemTransfer.class);
+        kryo.register(PacketPlayerState.class);
+        kryo.register(PacketPlayerTeleport.class);
 
         logger.info("Registering server adapter...");
         server.addListener(new ServerAdapter());
+        server.addListener(new PlayerSessionListener());
+        server.addListener(new PlayerStateListener());
+        server.addListener(new PlayerTeleportListener());
+        server.addListener(new PlayerTransferListener());
+        server.addListener(new QueryExecuteListener());
+        server.addListener(new QueryListener());
+        server.addListener(new ItemTransferListener());
+        server.addListener(new SendMessageListener());
+        server.addListener(new CustomPayloadListener());
+        server.addListener(new LinkerAuthListener());
 
         logger.info("Registering event adapter...");
         ProxyServer.getInstance().getPluginManager()

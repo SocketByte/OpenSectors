@@ -5,6 +5,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Util {
 
@@ -22,6 +23,9 @@ public class Util {
         else return ProxyServer.getInstance().getPlayer(uniqueId);
     }
     */
+    public static long getRandomLong(long min, long max) {
+        return ThreadLocalRandom.current().nextLong(min, max);
+    }
 
     // Should work?
     public static ProxiedPlayer getPlayer(UUID uniqueId) {
