@@ -9,6 +9,7 @@ import org.bukkit.WorldBorder;
 import org.bukkit.plugin.java.JavaPlugin;
 import pl.socketbyte.opensectors.linker.adapters.ConfigurationInfoListener;
 import pl.socketbyte.opensectors.linker.adapters.CustomPayloadListener;
+import pl.socketbyte.opensectors.linker.adapters.TaskValidateListener;
 import pl.socketbyte.opensectors.linker.adapters.player.PlayerInfoListener;
 import pl.socketbyte.opensectors.linker.adapters.player.PlayerTeleportListener;
 import pl.socketbyte.opensectors.linker.adapters.sync.TimeInfoListener;
@@ -35,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class OpenSectorLinker extends JavaPlugin {
@@ -175,6 +177,9 @@ public class OpenSectorLinker extends JavaPlugin {
         kryo.register(PacketItemTransfer.class);
         kryo.register(PacketPlayerState.class);
         kryo.register(PacketPlayerTeleport.class);
+        kryo.register(TimeUnit.class);
+        kryo.register(PacketTaskCreate.class);
+        kryo.register(PacketTaskValidate.class);
 
         logger.info("Registering the client adapter...");
         // Registering the client adapter
@@ -186,6 +191,7 @@ public class OpenSectorLinker extends JavaPlugin {
         client.addListener(new ItemTransferListener());
         client.addListener(new ConfigurationInfoListener());
         client.addListener(new CustomPayloadListener());
+        client.addListener(new TaskValidateListener());
 
         logger.info("Reading the linker server id from configuration file...");
         OpenSectorLinker.setServerId(getConfig().getInt("server-id"));

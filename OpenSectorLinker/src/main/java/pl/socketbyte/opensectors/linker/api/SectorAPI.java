@@ -3,12 +3,14 @@ package pl.socketbyte.opensectors.linker.api;
 import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.api.callback.Callback;
 import pl.socketbyte.opensectors.linker.api.callback.CallbackHandler;
+import pl.socketbyte.opensectors.linker.api.task.SynchronizedTask;
+import pl.socketbyte.opensectors.linker.api.task.TaskManager;
 import pl.socketbyte.opensectors.linker.packet.Packet;
-import pl.socketbyte.opensectors.linker.packet.PacketQuery;
-import pl.socketbyte.opensectors.linker.packet.PacketQueryExecute;
 import pl.socketbyte.opensectors.linker.util.NetworkManager;
+import pl.socketbyte.opensectors.linker.util.Util;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * This API is targeted towards beginner users unfamiliar with any technology presented here.
@@ -82,6 +84,48 @@ public class SectorAPI {
      */
     public static <T> void sendUDP(T packet, Callback<T> callback) {
         CallbackHandler.make((Packet) packet, callback);
+    }
+
+    /**
+     * Creates a task which is synchronized with all connected sectors
+     * @param taskId Task id is an identifier. Just set it to any number
+     * @param runnable A code which will be executed
+     * @param initialDelay Initial delay
+     * @param period A delay between code execution
+     * @param unit Time unit
+     */
+    public static void createTask(long taskId, Runnable runnable, int initialDelay, int period, TimeUnit unit) {
+        SynchronizedTask synchronizedTask = new SynchronizedTask(taskId, runnable);
+        synchronizedTask.setInitialDelay(initialDelay);
+        synchronizedTask.setPeriod(period);
+        synchronizedTask.setUnit(unit);
+
+        synchronizedTask.create();
+        synchronizedTask.send();
+    }
+
+    /**
+     * Creates a singleshot task which will be executed on all sectors
+     * @param runnable A code which will be executed
+     * @return SynchronizedTask object to save or send
+     */
+    public static SynchronizedTask prepareSingleShot(Runnable runnable) {
+        SynchronizedTask synchronizedTask = new SynchronizedTask(
+                Util.getRandomLong(Long.MIN_VALUE, Long.MAX_VALUE), runnable);
+        synchronizedTask.setInitialDelay(0);
+        synchronizedTask.setPeriod(0);
+        synchronizedTask.setUnit(null);
+
+        synchronizedTask.create();
+        return synchronizedTask;
+    }
+
+    /**
+     * Executes a singleshot task by taskId
+     * @param taskId A task id (random long number)
+     */
+    public static void executeSingleShot(long taskId) {
+        TaskManager.pull(taskId).send();
     }
 
 }

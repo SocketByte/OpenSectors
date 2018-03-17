@@ -6,6 +6,7 @@ import com.esotericsoftware.minlog.Log;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import pl.socketbyte.opensectors.linker.packet.PacketSendMessage;
+import pl.socketbyte.opensectors.system.adapters.TaskReceiveListener;
 import pl.socketbyte.opensectors.system.api.IPacketAdapter;
 import pl.socketbyte.opensectors.system.cryptography.Cryptography;
 import pl.socketbyte.opensectors.system.database.HikariManager;
@@ -34,13 +35,14 @@ import pl.socketbyte.opensectors.system.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.system.logging.StackTraceSeverity;
 import pl.socketbyte.opensectors.system.packet.*;
 import pl.socketbyte.opensectors.system.synchronizers.BukkitWeatherSynchronizer;
-import pl.socketbyte.opensectors.system.util.ExecutorScheduler;
+import pl.socketbyte.opensectors.system.api.task.TaskManager;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
@@ -177,6 +179,9 @@ public class OpenSectorSystem extends Plugin {
         kryo.register(PacketItemTransfer.class);
         kryo.register(PacketPlayerState.class);
         kryo.register(PacketPlayerTeleport.class);
+        kryo.register(TimeUnit.class);
+        kryo.register(PacketTaskCreate.class);
+        kryo.register(PacketTaskValidate.class);
 
         logger.info("Registering server adapter...");
         server.addListener(new ServerAdapter());
@@ -190,14 +195,17 @@ public class OpenSectorSystem extends Plugin {
         server.addListener(new SendMessageListener());
         server.addListener(new CustomPayloadListener());
         server.addListener(new LinkerAuthListener());
+        server.addListener(new TaskReceiveListener());
 
         logger.info("Registering event adapter...");
         ProxyServer.getInstance().getPluginManager()
                 .registerListener(this, new EventAdapter());
 
         logger.info("Running schedulers...");
-        ExecutorScheduler.runScheduler(new BukkitTimeSynchronizer(), getConfig().bukkitTimeFrequency);
-        ExecutorScheduler.runScheduler(new BukkitWeatherSynchronizer(), getConfig().bukkitTimeFrequency);
+        TaskManager.getExecutor().scheduleAtFixedRate(
+                new BukkitTimeSynchronizer(), 0, getConfig().bukkitTimeFrequency, TimeUnit.MILLISECONDS);
+        TaskManager.getExecutor().scheduleAtFixedRate(
+                new BukkitWeatherSynchronizer(), 0, getConfig().bukkitTimeFrequency, TimeUnit.MILLISECONDS);
         logger.info("Ready!");
     }
 

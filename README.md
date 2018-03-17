@@ -540,6 +540,49 @@ SectorAPI.sendTCP(state, new Callback<PacketPlayerState>() {
 This system also works on `PacketQueryExecute`.
 More packets based on callback system to come soon!
 
+## Task system
+There's pretty basic task system, but it allows you to create tasks
+which are synchronized over the network, so they're executed simultaneously.
+
+##### Basic task
+
+To create a task, use code below:
+```java
+SectorAPI.createTask(0, 
+        () -> System.out.println("Synchronized task with id:0"),
+                0, 1, TimeUnit.SECONDS);
+```
+The first parameter (`0`) is a task id. Each task 
+should have a different one!
+
+Second parameter is a runnable, which is your code.
+
+Then you have (`0`) which is `initialDelay`.
+
+Then is a `period` which is the rate of the task.
+
+And the last parameter is `TimeUnit` which doesn't need much explaining.
+
+##### Singleshot task
+There is also a singleshot task system, you can execute a code
+simultaneously on all sectors using `task.send()`.
+
+To prepare a singleshot task use: 
+```java
+SynchronizedTask task = SectorAPI.prepareSingleShot(
+        () -> System.out.println("Single shot task executed!"));
+```
+And then send it using
+```java
+task.send();
+```
+You can do that as many times as you want.
+
+#### Disclaimer
+Remember that if you use task system, you need to install 
+your plugin on all sectors.
+
+
 ## Additional packets
 ##### PacketItemTransfer *(from 1.1)*
 ```java
