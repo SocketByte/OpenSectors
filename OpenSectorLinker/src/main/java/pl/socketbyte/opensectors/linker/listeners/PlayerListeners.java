@@ -72,6 +72,7 @@ public class PlayerListeners implements Listener {
             if (packet.getInventory() != null)
                 player.getInventory().setContents(
                         Serializer.deserializeInventory(packet.getInventory()));
+            else player.getInventory().clear();
 
             if (packet.getArmorContents() != null)
                 player.getInventory().setArmorContents(
@@ -115,6 +116,8 @@ public class PlayerListeners implements Listener {
                             .replace("%id%", String.valueOf(controller.id))
                             .replace("%name%", controller.name)));
         }
+
+        PlayerInfoHolder.getPlayerInfos().remove(player.getUniqueId());
     }
 
     @EventHandler
