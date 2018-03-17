@@ -1,5 +1,6 @@
 package pl.socketbyte.opensectors.system.api;
 
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.connection.Server;
@@ -24,6 +25,17 @@ public class LinkerStorage {
 
     public static LinkerConnection getLinker(int serverId) {
         return linkerConnectionMap.get(serverId);
+    }
+
+    public static ServerInfo getServerInfoByPlayer(ProxiedPlayer player) {
+        LinkerConnection connection = getLinkerByPlayer(player);
+        if (connection == null)
+            return null;
+
+        ServerController controller = OpenSectorSystem.getServerController(connection.getServerId());
+        if (controller == null)
+            return null;
+        return ProxyServer.getInstance().getServerInfo(controller.name);
     }
 
     public static LinkerConnection getLinkerByConnectionId(int id) {
