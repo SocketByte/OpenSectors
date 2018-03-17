@@ -100,6 +100,7 @@ public class PlayerListeners implements Listener {
                 player.addPotionEffect(effect);
             }
         }
+        else player.getActivePotionEffects().clear();
 
         player.setHealth(packet.getHealth());
         player.setFoodLevel((int) packet.getFood());
