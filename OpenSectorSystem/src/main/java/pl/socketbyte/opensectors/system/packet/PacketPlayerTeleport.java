@@ -7,6 +7,7 @@ public class PacketPlayerTeleport extends Packet {
     private double x;
     private double y;
     private double z;
+    private PacketPlayerInfo playerInfo;
 
     public PacketPlayerTeleport() {
 
@@ -16,6 +17,14 @@ public class PacketPlayerTeleport extends Packet {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public PacketPlayerInfo getPlayerInfo() {
+        return playerInfo;
+    }
+
+    public void setPlayerInfo(PacketPlayerInfo playerInfo) {
+        this.playerInfo = playerInfo;
     }
 
     public String getPlayerUniqueId() {
@@ -66,6 +75,7 @@ public class PacketPlayerTeleport extends Packet {
                 ", x=" + x +
                 ", y=" + y +
                 ", z=" + z +
+                ", playerInfo=" + playerInfo +
                 '}';
     }
 }

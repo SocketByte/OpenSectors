@@ -32,8 +32,6 @@ public class PlayerTeleportListener extends Listener{
 
             if (targetConnection != null) {
                 ServerInfo serverInfo = LinkerStorage.getServerInfoByPlayer(target);
-
-                player.connect(serverInfo);
                 targetConnection.sendTCP(packet);
                 return;
             }

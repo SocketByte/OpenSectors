@@ -569,7 +569,7 @@ simultaneously on all sectors using `task.send()`.
 
 To prepare a singleshot task use: 
 ```java
-SynchronizedTask task = SectorAPI.prepareSingleShot(
+SynchronizedTask task = SectorAPI.prepareSingleShot(1,
         () -> System.out.println("Single shot task executed!"));
 ```
 And then send it using

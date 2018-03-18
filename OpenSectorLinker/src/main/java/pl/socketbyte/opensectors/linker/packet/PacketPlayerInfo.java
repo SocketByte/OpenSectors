@@ -1,6 +1,6 @@
 package pl.socketbyte.opensectors.linker.packet;
 
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.potion.PotionEffect;
 import pl.socketbyte.opensectors.linker.packet.serializable.SerializablePotionEffect;
 import pl.socketbyte.opensectors.linker.util.Serializer;

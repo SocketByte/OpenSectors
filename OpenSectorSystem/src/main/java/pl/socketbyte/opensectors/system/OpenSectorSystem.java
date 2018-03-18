@@ -87,8 +87,8 @@ public class OpenSectorSystem extends Plugin {
 
         Logger logger = getLogger();
 
-        // Disable Kryonet Logging
-        Log.set(Log.LEVEL_NONE);
+        // Kryonet logging to LEVEL_ERROR
+        Log.set(Log.LEVEL_ERROR);
 
         logger.info("Loading JSON configuration file...");
         JSONManager.INSTANCE.create();

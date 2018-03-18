@@ -3,6 +3,8 @@ package pl.socketbyte.opensectors.linker.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +12,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.socketbyte.opensectors.linker.OpenSectorLinker;
+import pl.socketbyte.opensectors.linker.adapters.player.PlayerTeleportListener;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 import pl.socketbyte.opensectors.linker.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.linker.logging.StackTraceSeverity;
@@ -60,6 +63,7 @@ public class PlayerListeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        PlayerTeleportListener.complete(player);
 
         event.setJoinMessage(null);
         PacketPlayerInfo packet = PlayerInfoHolder.getPlayerInfos().get(player.getUniqueId());
@@ -88,7 +92,11 @@ public class PlayerListeners implements Listener {
         SerializablePotionEffect[] potionEffects = packet.getPotionEffects();
         Location destination = new Location(player.getWorld(), packet.getX(), packet.getY(), packet.getZ(),
                 packet.getYaw(), packet.getPitch());
-        player.teleport(Util.getValidLocation(destination, packet.getY()));
+        Location valid = Util.getValidLocation(destination, packet.getY());
+        player.teleport(valid);
+
+        for (PotionEffect effect : player.getActivePotionEffects())
+            player.removePotionEffect(effect.getType());
 
         if (potionEffects != null) {
             for (SerializablePotionEffect potionEffect : potionEffects) {
@@ -96,11 +104,9 @@ public class PlayerListeners implements Listener {
                         PotionEffectType.getByName(potionEffect.getPotionEffectType()),
                         potionEffect.getDuration(),
                         potionEffect.getAmplifier());
-
                 player.addPotionEffect(effect);
             }
         }
-        else player.getActivePotionEffects().clear();
 
         player.setHealth(packet.getHealth());
         player.setFoodLevel((int) packet.getFood());

@@ -109,9 +109,8 @@ public class SectorAPI {
      * @param runnable A code which will be executed
      * @return SynchronizedTask object to save or send
      */
-    public static SynchronizedTask prepareSingleShot(Runnable runnable) {
-        SynchronizedTask synchronizedTask = new SynchronizedTask(
-                Util.getRandomLong(Long.MIN_VALUE, Long.MAX_VALUE), runnable);
+    public static SynchronizedTask prepareSingleShot(long taskId, Runnable runnable) {
+        SynchronizedTask synchronizedTask = new SynchronizedTask(taskId, runnable);
         synchronizedTask.setInitialDelay(0);
         synchronizedTask.setPeriod(0);
         synchronizedTask.setUnit(null);

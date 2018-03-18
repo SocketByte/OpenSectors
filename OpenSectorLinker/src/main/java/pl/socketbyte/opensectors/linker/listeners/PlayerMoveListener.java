@@ -2,6 +2,7 @@ package pl.socketbyte.opensectors.linker.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -87,6 +88,7 @@ public class PlayerMoveListener implements Listener {
 
             packet.setPlayerInfo(packetPlayerInfo);
 
+            System.out.println("GOING TO " + packet.getServerId());
             NetworkManager.sendTCP(packet);
 
             Bukkit.getScheduler().runTaskLater(OpenSectorLinker.getInstance(),

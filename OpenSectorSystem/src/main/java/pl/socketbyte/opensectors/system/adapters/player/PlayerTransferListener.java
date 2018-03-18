@@ -32,7 +32,7 @@ public class PlayerTransferListener extends Listener {
             OpenSectorSystem.log().warning("Linker with id " + id + " is not connected or it is not responding!");
             return;
         }
-
+        System.out.println("SENT PLAYER INFO TO " + linkerConnection.getServerId());
         NetworkManager.sendTCP(linkerConnection.getConnection(), packetPlayerInfo);
         ServerManager.transfer(uniqueId, id);
     }

@@ -19,7 +19,6 @@ public class EventAdapter implements Listener {
     public void onJoin(PostLoginEvent event) {
         ProxiedPlayer proxiedPlayer = event.getPlayer();
 
-
         int lastServerId = Database.getPlayerSession(proxiedPlayer.getUniqueId());
         if (lastServerId == 0)
             return;
