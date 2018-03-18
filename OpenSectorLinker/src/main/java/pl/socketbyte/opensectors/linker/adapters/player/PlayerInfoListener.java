@@ -17,7 +17,6 @@ public class PlayerInfoListener extends Listener {
             return;
 
         PacketPlayerInfo packet = (PacketPlayerInfo)object;
-        System.out.println("Received player info for " + packet.getPlayerUniqueId());
 
         PlayerInfoHolder.getPlayerInfos().put(UUID.fromString(packet.getPlayerUniqueId()), packet);
     }

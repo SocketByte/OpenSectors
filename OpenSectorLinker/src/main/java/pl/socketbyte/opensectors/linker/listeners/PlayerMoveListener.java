@@ -88,7 +88,6 @@ public class PlayerMoveListener implements Listener {
 
             packet.setPlayerInfo(packetPlayerInfo);
 
-            System.out.println("GOING TO " + packet.getServerId());
             NetworkManager.sendTCP(packet);
 
             Bukkit.getScheduler().runTaskLater(OpenSectorLinker.getInstance(),
