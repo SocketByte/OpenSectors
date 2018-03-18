@@ -3,7 +3,7 @@ Join our Discord server!
 
 [![https://discord.gg/GtnYegP](https://i.imgur.com/ZEzqv2h.png)](https://discord.gg/GtnYegP)
 
-OpenSectors allow you to split your world into different servers
+OpenSectors allows you to split your world into different servers
 using Kryonet and other networking solutions. This plugin splits your
 world into few pieces and each piece is different server. Everything
 is properly synchronized so it feels like it is one server. It allows you to
