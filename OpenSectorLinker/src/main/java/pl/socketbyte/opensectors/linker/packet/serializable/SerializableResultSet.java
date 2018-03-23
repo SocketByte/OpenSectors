@@ -16,7 +16,7 @@ public class SerializableResultSet implements Serializable {
     private transient ResultSet resultSet;
     private transient int currentIndex = 0;
     private transient Object[] cursor;
-    private List<Object[]> data = new LinkedList<>();
+    private List<Object[]> data = new ArrayList<>();
 
     public SerializableResultSet() {
 
