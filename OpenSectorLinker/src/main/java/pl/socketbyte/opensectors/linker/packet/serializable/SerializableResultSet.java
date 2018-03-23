@@ -25,23 +25,6 @@ public class SerializableResultSet implements Serializable {
         this.resultSet = resultSet;
     }
 
-    public void populate() {
-        try {
-            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-            int columnCount = resultSetMetaData.getColumnCount();
-
-            while (resultSet.next()) {
-                Object[] values = new Object[columnCount];
-                for (int i = 1; i <= columnCount; i++) {
-                    values[i - 1] = resultSet.getObject(i);
-                }
-                data.add(values);
-            }
-        } catch (SQLException e) {
-            StackTraceHandler.handle(SerializableResultSet.class, e, StackTraceSeverity.WARNING);
-        }
-    }
-
     public boolean next() {
         try {
             cursor = data.get(currentIndex);
