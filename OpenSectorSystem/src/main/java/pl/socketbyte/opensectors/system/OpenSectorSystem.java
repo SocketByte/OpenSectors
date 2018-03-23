@@ -147,6 +147,7 @@ public class OpenSectorSystem extends Plugin {
         kryo.register(Packet.class);
         kryo.register(Object.class);
         kryo.register(Object[].class);
+        kryo.register(LinkedList.class);
         kryo.register(ServerController[].class);
         kryo.register(SQLController.class);
         kryo.register(IPacketAdapter.class);

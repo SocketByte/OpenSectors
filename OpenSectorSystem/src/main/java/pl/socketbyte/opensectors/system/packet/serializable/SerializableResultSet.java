@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class SerializableResultSet implements Serializable {
@@ -15,7 +16,7 @@ public class SerializableResultSet implements Serializable {
     private transient ResultSet resultSet;
     private transient int currentIndex = 0;
     private transient Object[] cursor;
-    private List<Object[]> data = new ArrayList<>();
+    private List<Object[]> data = new LinkedList<>();
 
     public SerializableResultSet() {
 
