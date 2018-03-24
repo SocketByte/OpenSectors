@@ -16,6 +16,9 @@ import pl.socketbyte.opensectors.linker.adapters.sync.TimeInfoListener;
 import pl.socketbyte.opensectors.linker.adapters.sync.WeatherInfoListener;
 import pl.socketbyte.opensectors.linker.adapters.tool.ItemTransferListener;
 import pl.socketbyte.opensectors.linker.api.IPacketAdapter;
+import pl.socketbyte.opensectors.linker.api.synchronizable.Synchronizable;
+import pl.socketbyte.opensectors.linker.api.synchronizable.SynchronizedList;
+import pl.socketbyte.opensectors.linker.api.synchronizable.SynchronizedMap;
 import pl.socketbyte.opensectors.linker.cryptography.Cryptography;
 import pl.socketbyte.opensectors.linker.json.JSONConfig;
 import pl.socketbyte.opensectors.linker.json.controllers.SQLController;
@@ -180,6 +183,11 @@ public class OpenSectorLinker extends JavaPlugin {
         kryo.register(TimeUnit.class);
         kryo.register(PacketTaskCreate.class);
         kryo.register(PacketTaskValidate.class);
+        kryo.register(Synchronizable.class);
+        kryo.register(SynchronizedList.class);
+        kryo.register(SynchronizedMap.class);
+        kryo.register(PacketListUpdate.class);
+        kryo.register(PacketMapUpdate.class);
 
         logger.info("Registering the client adapter...");
         // Registering the client adapter

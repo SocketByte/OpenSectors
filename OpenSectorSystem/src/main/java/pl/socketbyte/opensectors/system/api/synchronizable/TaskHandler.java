@@ -1,4 +1,4 @@
-package pl.socketbyte.opensectors.system.api.task;
+package pl.socketbyte.opensectors.system.api.synchronizable;
 
 import pl.socketbyte.opensectors.system.packet.PacketTaskCreate;
 import pl.socketbyte.opensectors.system.packet.PacketTaskValidate;

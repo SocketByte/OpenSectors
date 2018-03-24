@@ -31,7 +31,7 @@ public class PacketCustomPayload extends Packet {
     public String toString() {
         return "PacketCustomPayload{" +
                 "channel='" + channel + '\'' +
-                ", data=" + Arrays.toString(data) +
+                ", synchronizable=" + Arrays.toString(data) +
                 '}';
     }
 }

@@ -6,13 +6,14 @@ import com.esotericsoftware.minlog.Log;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 import pl.socketbyte.opensectors.linker.packet.PacketSendMessage;
-import pl.socketbyte.opensectors.system.adapters.TaskReceiveListener;
+import pl.socketbyte.opensectors.system.adapters.*;
 import pl.socketbyte.opensectors.system.api.IPacketAdapter;
+import pl.socketbyte.opensectors.system.api.synchronizable.Synchronizable;
+import pl.socketbyte.opensectors.system.api.synchronizable.SynchronizedList;
+import pl.socketbyte.opensectors.system.api.synchronizable.SynchronizedMap;
 import pl.socketbyte.opensectors.system.cryptography.Cryptography;
 import pl.socketbyte.opensectors.system.database.HikariManager;
 import pl.socketbyte.opensectors.system.database.basic.HikariMySQL;
-import pl.socketbyte.opensectors.system.adapters.CustomPayloadListener;
-import pl.socketbyte.opensectors.system.adapters.LinkerAuthListener;
 import pl.socketbyte.opensectors.system.adapters.player.PlayerSessionListener;
 import pl.socketbyte.opensectors.system.adapters.player.PlayerStateListener;
 import pl.socketbyte.opensectors.system.adapters.player.PlayerTeleportListener;
@@ -35,7 +36,7 @@ import pl.socketbyte.opensectors.system.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.system.logging.StackTraceSeverity;
 import pl.socketbyte.opensectors.system.packet.*;
 import pl.socketbyte.opensectors.system.synchronizers.BukkitWeatherSynchronizer;
-import pl.socketbyte.opensectors.system.api.task.TaskManager;
+import pl.socketbyte.opensectors.system.api.synchronizable.TaskManager;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -87,8 +88,8 @@ public class OpenSectorSystem extends Plugin {
 
         Logger logger = getLogger();
 
-        // Kryonet logging to LEVEL_ERROR
-        Log.set(Log.LEVEL_ERROR);
+        // Kryonet logging to LEVEL_WARN
+        Log.set(Log.LEVEL_WARN);
 
         logger.info("Loading JSON configuration file...");
         JSONManager.INSTANCE.create();
@@ -182,6 +183,11 @@ public class OpenSectorSystem extends Plugin {
         kryo.register(TimeUnit.class);
         kryo.register(PacketTaskCreate.class);
         kryo.register(PacketTaskValidate.class);
+        kryo.register(Synchronizable.class);
+        kryo.register(SynchronizedList.class);
+        kryo.register(SynchronizedMap.class);
+        kryo.register(PacketListUpdate.class);
+        kryo.register(PacketMapUpdate.class);
 
         logger.info("Registering server adapter...");
         server.addListener(new ServerAdapter());
@@ -196,6 +202,8 @@ public class OpenSectorSystem extends Plugin {
         server.addListener(new CustomPayloadListener());
         server.addListener(new LinkerAuthListener());
         server.addListener(new TaskReceiveListener());
+        server.addListener(new ListUpdateListener());
+        server.addListener(new MapUpdateListener());
 
         logger.info("Registering event adapter...");
         ProxyServer.getInstance().getPluginManager()

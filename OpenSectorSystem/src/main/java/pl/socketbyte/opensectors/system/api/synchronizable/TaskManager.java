@@ -1,4 +1,4 @@
-package pl.socketbyte.opensectors.system.api.task;
+package pl.socketbyte.opensectors.system.api.synchronizable;
 
 import java.util.*;
 import java.util.concurrent.Executors;

@@ -67,7 +67,7 @@ public class SerializableItem {
         return "SerializableItem{" +
                 "material='" + material + '\'' +
                 ", amount=" + amount +
-                ", data=" + data +
+                ", synchronizable=" + data +
                 ", displayName='" + displayName + '\'' +
                 ", lores=" + lores +
                 ", enchantments=" + enchantments +

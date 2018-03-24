@@ -11,13 +11,24 @@ public class CallbackHandler implements Runnable {
     private static final ExecutorService executorService = Executors.newFixedThreadPool(
             Runtime.getRuntime().availableProcessors());
 
-    public static void make(Packet packet, Callback callbackAction) {
-        CallbackHandler callbackHandler = new CallbackHandler();
+    public static ExecutorService getExecutorService() {
+        return executorService;
+    }
+
+    public static CallbackHandler make(Packet packet, Callback callbackAction) {
+        CallbackHandler callbackHandler = make(packet);
         callbackHandler.setCallbackAction(callbackAction);
-        callbackHandler.setCallbackId(packet.getCallbackId());
-        callbackHandler.setPacket(packet);
 
         executorService.submit(callbackHandler);
+        return callbackHandler;
+    }
+
+    public static CallbackHandler make(Packet packet) {
+        CallbackHandler callbackHandler = new CallbackHandler();
+        callbackHandler.setCallbackAction(null);
+        callbackHandler.setCallbackId(packet.getCallbackId());
+        callbackHandler.setPacket(packet);
+        return callbackHandler;
     }
 
     private CallbackHandler() {
@@ -58,17 +69,21 @@ public class CallbackHandler implements Runnable {
         this.callbackId = callbackId;
     }
 
-    @Override
-    public void run() {
-        NetworkManager.sendTCP(packet);
+    public void sendAndPush() {
+        NetworkManager.sendTCPSync(packet);
 
         ClientAdapter
                 .getCallbackCatcher()
                 .push(callbackId, this);
+    }
 
+    @Override
+    public void run() {
+        sendAndPush();
         callback(packet, callbackAction);
     }
 
+    @SuppressWarnings("unchecked")
     public void callback(Packet packet, Callback callbackAction) {
         Packet callback = null;
         try {

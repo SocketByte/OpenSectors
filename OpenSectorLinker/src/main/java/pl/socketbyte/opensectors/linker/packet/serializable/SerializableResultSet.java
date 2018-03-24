@@ -84,7 +84,7 @@ public class SerializableResultSet implements Serializable {
     @Override
     public String toString() {
         return "SerializableResultSet{" +
-                ", data=" + data +
+                ", synchronizable=" + data +
                 '}';
     }
 }

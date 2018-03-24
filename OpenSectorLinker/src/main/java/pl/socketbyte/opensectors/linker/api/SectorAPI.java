@@ -74,16 +74,16 @@ public class SectorAPI {
      * Sends an TCP packet to proxy
      * @param packet Object which extends Packet class, containing serializable fields and methods
      */
-    public static <T> void sendTCP(T packet, Callback<T> callback) {
-        CallbackHandler.make((Packet) packet, callback);
+    public static <T> CallbackHandler sendTCP(T packet, Callback<T> callback) {
+        return CallbackHandler.make((Packet) packet, callback);
     }
 
     /**
      * Sends an UDP packet to proxy
      * @param packet Object which extends Packet class, containing serializable fields and methods
      */
-    public static <T> void sendUDP(T packet, Callback<T> callback) {
-        CallbackHandler.make((Packet) packet, callback);
+    public static <T> CallbackHandler sendUDP(T packet, Callback<T> callback) {
+        return CallbackHandler.make((Packet) packet, callback);
     }
 
     /**

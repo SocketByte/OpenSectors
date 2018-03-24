@@ -2,8 +2,8 @@ package pl.socketbyte.opensectors.system.adapters;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
-import pl.socketbyte.opensectors.system.api.task.TaskHandler;
-import pl.socketbyte.opensectors.system.api.task.TaskManager;
+import pl.socketbyte.opensectors.system.api.synchronizable.TaskHandler;
+import pl.socketbyte.opensectors.system.api.synchronizable.TaskManager;
 import pl.socketbyte.opensectors.system.packet.PacketTaskCreate;
 
 public class TaskReceiveListener extends Listener {
