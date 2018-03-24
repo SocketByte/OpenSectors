@@ -1,4 +1,4 @@
-# OpenSectors ![version](https://img.shields.io/badge/version-1.2-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
+# OpenSectors ![version](https://img.shields.io/badge/version-1.3-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
 Join our Discord server! 
 
 [![https://discord.gg/GtnYegP](https://i.imgur.com/ZEzqv2h.png)](https://discord.gg/GtnYegP)
