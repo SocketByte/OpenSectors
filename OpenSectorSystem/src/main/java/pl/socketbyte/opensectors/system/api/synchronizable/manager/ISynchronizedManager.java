@@ -6,7 +6,7 @@ public interface ISynchronizedManager<E> {
 
     Map<Long, E> getData();
 
-    void push(E type);
+    void push(long id, E type);
     E pull(long id);
 
 }

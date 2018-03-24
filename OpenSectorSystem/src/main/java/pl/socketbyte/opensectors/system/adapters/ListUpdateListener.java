@@ -8,6 +8,9 @@ import pl.socketbyte.opensectors.system.api.synchronizable.manager.SynchronizedM
 import pl.socketbyte.opensectors.system.packet.PacketListUpdate;
 import pl.socketbyte.opensectors.system.util.NetworkManager;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ListUpdateListener extends Listener {
 
     @SuppressWarnings("unchecked")
@@ -15,31 +18,28 @@ public class ListUpdateListener extends Listener {
     public void received(Connection connection, Object object) {
         super.received(connection, object);
 
-        System.out.println("RECEIVED UNIDENTIFIED PACKET " + object.toString());
         if (!(object instanceof PacketListUpdate))
             return;
-        System.out.println("RECEIVED PACKET LIST UPDATE");
 
         PacketListUpdate packet = (PacketListUpdate)object;
         long id = packet.getId();
-        SynchronizedList list = packet.getSynchronizedList();
-        SynchronizedManager<SynchronizedList> manager =
+        List list = packet.getList();
+        SynchronizedManager<List> manager =
                 SynchronizedContainer.getListManager();
 
-        if (list == null) {
-            System.out.println("NULL LIST, ID: " + id);
+        if (packet.isCallback()) {
+            List pulled = manager.pull(id);
+            if (pulled == null)
+                throw new RuntimeException("List with this ID does not exist or is invalid. [id: " + id + "]");
 
-            SynchronizedList pulled = manager.pull(id);
-            System.out.println("RECEIVED LIST");
+            packet.setList(pulled);
 
-            packet.setList(pulled.getData());
-            System.out.println("SET LIST");
-
-            System.out.println("EVERYTHING FINE, SENDING CALLBACK");
             NetworkManager.sendTCP(connection, packet);
             return;
         }
-        System.out.println("PUSHED LIST WITH ID " + list.getId());
-        manager.push(list);
+        if (list == null)
+            throw new RuntimeException("List can not be null [id: " + id + "]");
+
+        manager.push(id, list);
     }
 }

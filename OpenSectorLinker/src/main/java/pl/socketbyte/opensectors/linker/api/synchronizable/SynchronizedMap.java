@@ -17,22 +17,28 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class SynchronizedMap<K, V> extends Synchronizable implements Map<K, V>, Serializable {
+public class SynchronizedMap<K, V> extends Synchronizable<Map<K, V>> implements Map<K, V>, Serializable {
 
     private Map<K, V> map = new HashMap<>();
 
     public SynchronizedMap(int id) {
         super(id);
+        update();
     }
 
     public SynchronizedMap() {
         super();
     }
 
+    @Override
+    public Map<K, V> getData() {
+        return map;
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public void synchronize() {
-        PacketMapUpdate<K, V> packet = new PacketMapUpdate<>();
+        PacketMapUpdate<K, V> packet = new PacketMapUpdate<>(true);
         packet.setId(getId());
 
         CallbackHandler handler = CallbackHandler.make(packet);
@@ -52,7 +58,7 @@ public class SynchronizedMap<K, V> extends Synchronizable implements Map<K, V>, 
     @SuppressWarnings("unchecked")
     @Override
     public void update() {
-        SectorAPI.sendTCP(new PacketMapUpdate<>(this));
+        SectorAPI.sendTCP(new PacketMapUpdate<>(false, this));
     }
 
     @Override

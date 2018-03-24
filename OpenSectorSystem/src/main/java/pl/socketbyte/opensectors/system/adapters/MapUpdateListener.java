@@ -8,6 +8,8 @@ import pl.socketbyte.opensectors.system.api.synchronizable.manager.SynchronizedM
 import pl.socketbyte.opensectors.system.packet.PacketMapUpdate;
 import pl.socketbyte.opensectors.system.util.NetworkManager;
 
+import java.util.Map;
+
 public class MapUpdateListener extends Listener {
 
     @SuppressWarnings("unchecked")
@@ -20,19 +22,24 @@ public class MapUpdateListener extends Listener {
 
         PacketMapUpdate packet = (PacketMapUpdate)object;
         long id = packet.getId();
-        SynchronizedMap map = packet.getSynchronizedMap();
-        SynchronizedManager<SynchronizedMap> manager =
+        Map map = packet.getMap();
+        SynchronizedManager<Map> manager =
                 SynchronizedContainer.getMapManager();
 
-        if (map == null) {
-            SynchronizedMap pulled = manager.pull(id);
+        if (packet.isCallback()) {
+            Map pulled = manager.pull(id);
+            if (pulled == null)
+                throw new RuntimeException("Map with this ID does not exist or is invalid. [id: " + id + "]");
 
-            packet.setMap(pulled.getData());
+            packet.setMap(pulled);
 
             NetworkManager.sendTCP(connection, packet);
             return;
         }
-        manager.push(map);
+        if (map == null)
+            throw new RuntimeException("List can not be null [id: " + id + "]");
+
+        manager.push(id, map);
     }
 
 }

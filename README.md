@@ -582,6 +582,20 @@ You can do that as many times as you want.
 Remember that if you use task system, you need to install 
 your plugin on all sectors.
 
+## Synchronized data types
+The new WIP feature of `OpenSectors` API.
+
+It allows you to create synchronized lists or maps over the network.
+It's super easy to use because of direct `List<E>` or `Map<K, V>` implementation.
+
+```java
+List<String> list = new SynchronizedList<>(0);
+Map<String, String> map = new SynchronizedMap<>(0);
+```
+The parameter is an ID, it needs to be unique for each list/map.
+Then, you just use them like normal lists or maps.
+
+Remember, this is a **Work In Progress** feature. It can be bugged, especially maps (!). 
 
 ## Additional packets
 ##### PacketItemTransfer *(from 1.1)*

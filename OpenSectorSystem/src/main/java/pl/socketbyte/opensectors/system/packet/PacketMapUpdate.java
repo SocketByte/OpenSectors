@@ -7,16 +7,20 @@ import java.util.Map;
 public class PacketMapUpdate<K, V> extends Packet {
 
     private Map<K, V> map;
-    private SynchronizedMap<K, V> synchronizedMap;
+    private boolean callback;
     private long id;
 
     public PacketMapUpdate(SynchronizedMap<K, V> synchronizedMap) {
-        this.synchronizedMap = synchronizedMap;
+        this.map = synchronizedMap.getData();
         this.id = synchronizedMap.getId();
     }
 
     public PacketMapUpdate() {
 
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -31,14 +35,18 @@ public class PacketMapUpdate<K, V> extends Packet {
         this.map = map;
     }
 
-    public SynchronizedMap<K, V> getSynchronizedMap() {
-        return synchronizedMap;
+    public boolean isCallback() {
+        return callback;
+    }
+
+    public void setCallback(boolean callback) {
+        this.callback = callback;
     }
 
     @Override
     public String toString() {
         return "PacketMapUpdate{" +
-                "synchronizedMap=" + synchronizedMap +
+                "id=" + id +
                 '}';
     }
 

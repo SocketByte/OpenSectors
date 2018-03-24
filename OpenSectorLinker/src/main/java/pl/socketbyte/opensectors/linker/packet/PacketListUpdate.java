@@ -1,18 +1,24 @@
 package pl.socketbyte.opensectors.linker.packet;
 
 import pl.socketbyte.opensectors.linker.api.synchronizable.SynchronizedList;
+import pl.socketbyte.opensectors.linker.api.synchronizable.SynchronizedMap;
 
 import java.util.List;
 
 public class PacketListUpdate<E> extends Packet {
 
     private List<E> list;
-    private SynchronizedList<E> synchronizedList;
+    private boolean callback;
     private long id;
 
-    public PacketListUpdate(SynchronizedList<E> synchronizedList) {
-        this.synchronizedList = synchronizedList;
+    public PacketListUpdate(boolean callback, SynchronizedList<E> synchronizedList) {
+        this.list = synchronizedList.getData();
         this.id = synchronizedList.getId();
+        this.callback = callback;
+    }
+
+    public PacketListUpdate(boolean callback) {
+        this.callback = callback;
     }
 
     public PacketListUpdate() {
@@ -35,8 +41,12 @@ public class PacketListUpdate<E> extends Packet {
         this.list = list;
     }
 
-    public SynchronizedList<E> getSynchronizedList() {
-        return synchronizedList;
+    public boolean isCallback() {
+        return callback;
+    }
+
+    public void setCallback(boolean callback) {
+        this.callback = callback;
     }
 
     @Override

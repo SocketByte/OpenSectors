@@ -17,12 +17,8 @@ public class SynchronizedManager<T> implements ISynchronizedManager<T> {
     }
 
     @Override
-    public void push(T type) {
-        if (!(type instanceof Synchronizable))
-            throw new SynchronizableException();
-
-        Synchronizable synchronizable = (Synchronizable)type;
-        data.put(synchronizable.getId(), type);
+    public void push(long id, T type) {
+        data.put(id, type);
     }
 
     @Override
