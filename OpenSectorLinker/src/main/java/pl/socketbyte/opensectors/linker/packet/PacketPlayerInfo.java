@@ -74,7 +74,7 @@ public class PacketPlayerInfo extends Packet {
         setFly(player.getAllowFlight());
         setGameMode(player.getGameMode().name());
         setHeldSlot(player.getInventory().getHeldItemSlot());
-
+        setFireTicks(player.getFireTicks());
     }
 
     public int getFireTicks() {
