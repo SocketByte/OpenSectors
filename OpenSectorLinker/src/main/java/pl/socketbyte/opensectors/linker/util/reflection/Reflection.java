@@ -1,13 +1,11 @@
 package pl.socketbyte.opensectors.linker.util.reflection;
 
-import com.google.common.collect.Maps;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -189,6 +187,7 @@ public class Reflection {
 
     public static Class<?> getBukkitClass(final String name) {
         final String className = "org.bukkit.craftbukkit." + getVersion() + name;
+
         Class<?> c = null;
         try {
             c = Class.forName(className);

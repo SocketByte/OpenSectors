@@ -13,4 +13,5 @@ public class PlayerInfoHolder {
     public static Map<UUID, PacketPlayerInfo> getPlayerInfos() {
         return playerInfos;
     }
+
 }

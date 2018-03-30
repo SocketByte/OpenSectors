@@ -27,6 +27,7 @@ public class PacketPlayerInfo extends Packet {
     private String gameMode;
     private boolean fly;
     private int heldSlot;
+    private int fireTicks;
 
     public PacketPlayerInfo() {
 
@@ -73,6 +74,15 @@ public class PacketPlayerInfo extends Packet {
         setFly(player.getAllowFlight());
         setGameMode(player.getGameMode().name());
         setHeldSlot(player.getInventory().getHeldItemSlot());
+
+    }
+
+    public int getFireTicks() {
+        return fireTicks;
+    }
+
+    public void setFireTicks(int fireTicks) {
+        this.fireTicks = fireTicks;
     }
 
     public String getPlayerUniqueId() {
@@ -231,6 +241,7 @@ public class PacketPlayerInfo extends Packet {
                 ", gameMode='" + gameMode + '\'' +
                 ", fly=" + fly +
                 ", heldSlot=" + heldSlot +
+                ", fireTicks=" + fireTicks +
                 '}';
     }
 

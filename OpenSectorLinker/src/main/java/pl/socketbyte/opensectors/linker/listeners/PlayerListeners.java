@@ -32,7 +32,6 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        // Works? Then don't touch.
         Bukkit.getPluginManager().callEvent(
                 new PlayerMoveEvent(event.getPlayer(), event.getFrom(), event.getTo()));
     }
@@ -68,7 +67,6 @@ public class PlayerListeners implements Listener {
         event.setJoinMessage(null);
         PacketPlayerInfo packet = PlayerInfoHolder.getPlayerInfos().get(player.getUniqueId());
 
-        // It probably means that joined the game without pending transfer.
         if (packet == null)
             return;
 
@@ -115,6 +113,7 @@ public class PlayerListeners implements Listener {
         player.setAllowFlight(packet.isFly());
         player.setGameMode(GameMode.valueOf(packet.getGameMode()));
         player.getInventory().setHeldItemSlot(packet.getHeldSlot());
+        player.setFireTicks(packet.getFireTicks());
 
         ServerController controller = OpenSectorLinker.getServerController(OpenSectorLinker.getServerId());
         for (String str : OpenSectorLinker.getInstance().getConfig().getStringList("sector-welcome-message")) {

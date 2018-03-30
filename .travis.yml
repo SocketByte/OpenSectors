@@ -4,11 +4,12 @@ sudo: required
 matrix:
   include:
     - jdk: oraclejdk8
+  allow_failures:
     - jdk: oraclejdk9
       addons:
         apt:
           packages:
-            - oracle-java9-installer # https://docs.travis-ci.com/user/languages/java/#Updating-Oracle-JDK-to-a-recent-release
-            
+            - oracle-java9-installer
+
 notifications:
   email: false
