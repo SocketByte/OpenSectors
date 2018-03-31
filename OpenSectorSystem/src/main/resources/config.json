@@ -1,0 +1,85 @@
+{
+  "password": "CHANGE_THIS_TO_YOUR_PASSWORD___IT_NEEDS_TO_BE_SECURE!",
+  "sectorSize": 500,
+  "sectors": 9,
+  "portTCP": 23904,
+  "portUDP": 23905,
+  "bufferSize": 8192,
+  "bukkitTimeFrequency": 500,
+  "bukkitTimeIncremental": 10,
+  "border": 1500,
+  "defaultChatFormat": "&7{PLAYER}&8: &f{MESSAGE}",
+  "sqlController": {
+    "host": "localhost",
+    "port": 3306,
+    "user": "root",
+    "password": "",
+    "database": "opensectors",
+    "useDefaultSql": true
+  },
+  "serverControllers": [
+    {
+      "id": 0,
+      "port": 25566,
+      "name": "center",
+      "x": 0,
+      "z": 0
+    },
+    {
+      "id": 1,
+      "port": 25567,
+      "name": "n",
+      "x": 0,
+      "z": -1000
+    },
+    {
+      "id": 2,
+      "port": 25568,
+      "name": "s",
+      "x": 0,
+      "z": 1000
+    },
+    {
+      "id": 3,
+      "port": 25569,
+      "name": "w",
+      "x": -1000,
+      "z": 0
+    },
+    {
+      "id": 4,
+      "port": 25570,
+      "name": "e",
+      "x": 1000,
+      "z": 0
+    },
+    {
+      "id": 5,
+      "port": 25571,
+      "name": "nw",
+      "x": -1000,
+      "z": -1000
+    },
+    {
+      "id": 6,
+      "port": 25572,
+      "name": "ne",
+      "x": 1000,
+      "z": -1000
+    },
+    {
+      "id": 7,
+      "port": 25573,
+      "name": "sw",
+      "x": -1000,
+      "z": 1000
+    },
+    {
+      "id": 8,
+      "port": 25574,
+      "name": "se",
+      "x": 1000,
+      "z": 1000
+    }
+  ]
+}

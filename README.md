@@ -43,7 +43,6 @@ This presentation will be quite long, so here you have quick links to everything
 ## Recent TODO
 - Ability to change sector shape and dimensions
 - Create a border (from MC1.8) on each sector
-- Make better default JSON configuration (no need to copy from GitHub)
 - Repair `PacketPlayerTeleport` (better player info handling)
 - More informations in `PacketPlayerInfo`
 - More default packets to use
