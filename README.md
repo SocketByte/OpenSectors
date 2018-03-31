@@ -18,7 +18,7 @@ bad to it, can't do it!
 
 This presentation will be quite long, so here you have quick links to everything.
 - [Features](#features)
-- [Future of the project](#what-will-be-added)
+- [Future of the project](#recent-todo)
 - [How it works?](#how-it-works--installation)
 - [Do I need redis?](#do-i-need-redis-or-something-similar)
 - [How do I use it?](#how-do-i-use-it-with-my-other-plugins)
@@ -40,10 +40,15 @@ This presentation will be quite long, so here you have quick links to everything
 * Built-in fast MySQL connection and API (using HikariCP)
 * Possibilities
 
-## What will be added?
-Probably a lot of things, main thing I want to add is weather
-synchronization and possibility to add own time/weather like synchronizations
-easily through the API.
+## Recent TODO
+- Ability to change sector shape and dimensions
+- Create a border (from MC1.8) on each sector
+- Make better default JSON configuration (no need to copy from GitHub)
+- Repair `PacketPlayerTeleport` (better player info handling)
+- More informations in `PacketPlayerInfo`
+- [Wrapp](https://github.com/SocketByte/Wrapp) integration
+- More default packets to use
+- Multiple center sectors to improve performance (sector channel system)
 
 ## How it works / installation?
 The project actually contains two projects - linker and system.
