@@ -64,7 +64,19 @@
         </resources>
     </build>
 
+    <repositories>
+        <repository>
+            <id>socketbyte-repo</id>
+            <url>http://repo.socketbyte.pl/repository/nexus-releases</url>
+        </repository>
+    </repositories>
+
     <dependencies>
+        <dependency>
+            <groupId>pl.socketbyte</groupId>
+            <artifactId>Wrapp</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

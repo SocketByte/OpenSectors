@@ -46,7 +46,6 @@ This presentation will be quite long, so here you have quick links to everything
 - Make better default JSON configuration (no need to copy from GitHub)
 - Repair `PacketPlayerTeleport` (better player info handling)
 - More informations in `PacketPlayerInfo`
-- [Wrapp](https://github.com/SocketByte/Wrapp) integration
 - More default packets to use
 - Multiple center sectors to improve performance (sector channel system)
 
@@ -601,6 +600,40 @@ The parameter is an ID, it needs to be unique for each list/map.
 Then, you just use them like normal lists or maps.
 
 Remember, this is a **Work In Progress** feature. It can be bugged, especially maps (!). 
+
+## Wrapp integration
+More about wrapp [here](https://github.com/SocketByte/Wrapp).
+
+You can easily integrate Wrapp to OpenSectors. How? Let me explain.
+
+Start with registering an adapter:
+```java
+WrapperFactory wrapperFactory = new WrapperFactory(); // REUSE THAT
+SectorAPI.registerPayloadChannel("MYOBJECT_WRAPP_CHANNEL", (connection, packet) -> {
+     PacketWrapper<MyObject> packet = (PacketWrapper)packet;
+     Wrapper<MyObject> wrapper = packet.getWrapper();
+
+     MyObject myObject = new MyObject();
+     wrapperFactory.read(wrapper, myObject);
+
+     // congratz, your object is now set!
+});
+```
+Then you can send it from `Linker` using:
+```java
+MyObject objectToSave = new MyObject(); // it's not serializable
+
+WrapperFactory wrapperFactory = new WrapperFactory(); // REUSE THAT
+wrapperFactory.register(MyObject.class); // optional to improve speed
+Wrapper<MyObject> wrapper = wrapperFactory.write(objectToSave);
+
+PacketWrapper<MyObject> packet = new PacketWrapper<>();
+packet.setChannel("MYOBJECT_WRAPP_CHANNEL");
+packet.setData(new Object[] { "additional data" });
+packet.setWrapper(wrapper);
+
+SectorAPI.sendTCP(packet);
+```
 
 ## Additional packets
 ##### PacketItemTransfer *(from 1.1)*

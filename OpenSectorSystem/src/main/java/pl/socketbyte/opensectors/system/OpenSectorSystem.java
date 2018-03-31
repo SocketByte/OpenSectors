@@ -37,6 +37,8 @@ import pl.socketbyte.opensectors.system.logging.StackTraceSeverity;
 import pl.socketbyte.opensectors.system.packet.*;
 import pl.socketbyte.opensectors.system.synchronizers.BukkitWeatherSynchronizer;
 import pl.socketbyte.opensectors.system.api.synchronizable.TaskManager;
+import pl.socketbyte.wrapp.FieldInfo;
+import pl.socketbyte.wrapp.Wrapper;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -188,6 +190,10 @@ public class OpenSectorSystem extends Plugin {
         kryo.register(SynchronizedMap.class);
         kryo.register(PacketListUpdate.class);
         kryo.register(PacketMapUpdate.class);
+        kryo.register(Class.class);
+        kryo.register(FieldInfo.class);
+        kryo.register(Wrapper.class);
+        kryo.register(PacketWrapper.class);
 
         logger.info("Registering server adapter...");
         server.addListener(new ServerAdapter());

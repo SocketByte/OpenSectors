@@ -34,6 +34,8 @@ import pl.socketbyte.opensectors.linker.packet.types.MessageType;
 import pl.socketbyte.opensectors.linker.packet.types.Receiver;
 import pl.socketbyte.opensectors.linker.packet.types.Weather;
 import pl.socketbyte.opensectors.linker.sector.SectorManager;
+import pl.socketbyte.wrapp.FieldInfo;
+import pl.socketbyte.wrapp.Wrapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -188,6 +190,10 @@ public class OpenSectorLinker extends JavaPlugin {
         kryo.register(SynchronizedMap.class);
         kryo.register(PacketListUpdate.class);
         kryo.register(PacketMapUpdate.class);
+        kryo.register(Class.class);
+        kryo.register(FieldInfo.class);
+        kryo.register(Wrapper.class);
+        kryo.register(PacketWrapper.class);
 
         logger.info("Registering the client adapter...");
         // Registering the client adapter
