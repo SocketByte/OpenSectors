@@ -17,7 +17,7 @@ public class ConfigurationInfoListener extends Listener {
         PacketConfigurationInfo packet = (PacketConfigurationInfo)object;
 
         OpenSectorLinker.setConfiguration(packet.getJsonConfig());
-        OpenSectorLinker.getInstance().getLogger().info("Successfully received configuration data from the proxy server.");
+        OpenSectorLinker.log().info("Successfully received configuration data from the proxy server.");
         OpenSectorLinker.ready();
     }
 }
