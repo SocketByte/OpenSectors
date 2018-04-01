@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
+import org.bstats.bungeecord.Metrics;
 import pl.socketbyte.opensectors.linker.packet.PacketSendMessage;
 import pl.socketbyte.opensectors.system.adapters.*;
 import pl.socketbyte.opensectors.system.api.IPacketAdapter;
@@ -221,6 +222,9 @@ public class OpenSectorSystem extends Plugin {
         TaskManager.getExecutor().scheduleAtFixedRate(
                 new BukkitWeatherSynchronizer(), 0, getConfig().bukkitTimeFrequency, TimeUnit.MILLISECONDS);
         logger.info("Ready!");
+
+        logger.info("Running metrics...");
+        Metrics metrics = new Metrics(this);
     }
 
     public void close() {

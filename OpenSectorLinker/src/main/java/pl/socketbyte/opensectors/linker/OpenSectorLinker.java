@@ -3,6 +3,7 @@ package pl.socketbyte.opensectors.linker;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -239,5 +240,8 @@ public class OpenSectorLinker extends JavaPlugin {
         worldBorder.setSize((config.border - 25) * 2); // im genius XD
         worldBorder.setCenter(0, 0);
         log().info("Ready!");
+
+        log().info("Running metrics...");
+        Metrics metrics = new Metrics(OpenSectorLinker.getInstance());
     }
 }

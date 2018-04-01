@@ -66,6 +66,10 @@
 
     <repositories>
         <repository>
+            <id>bstats-repo</id>
+            <url>http://repo.bstats.org/content/repositories/releases/</url>
+        </repository>
+        <repository>
             <id>socketbyte-repo</id>
             <url>http://repo.socketbyte.pl/repository/nexus-releases</url>
         </repository>
