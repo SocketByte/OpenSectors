@@ -13,6 +13,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.adapters.player.PlayerTeleportListener;
+import pl.socketbyte.opensectors.linker.api.callback.CallbackWaiter;
+import pl.socketbyte.opensectors.linker.api.callback.ParametrizedCallback;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 import pl.socketbyte.opensectors.linker.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.linker.logging.StackTraceSeverity;
@@ -60,13 +62,28 @@ public class PlayerListeners implements Listener {
     }
 
     @EventHandler
+    public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+        UUID uniqueId = event.getUniqueId();
+        CallbackWaiter<PacketPlayerInfo> waiter = new CallbackWaiter<>(PacketPlayerInfo.class);
+        waiter.setParametrizedCallback(callback ->
+                callback.getPlayerUniqueId().equals(uniqueId.toString()));
+
+        PacketPlayerInfo packet = waiter.waitAndGet();
+
+        if (packet == null)
+            return;
+
+        PlayerInfoHolder.push(packet);
+    }
+
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         PlayerTeleportListener.complete(player);
 
         event.setJoinMessage(null);
-        PacketPlayerInfo packet = PlayerInfoHolder.getPlayerInfos().get(player.getUniqueId());
 
+        PacketPlayerInfo packet = PlayerInfoHolder.pull(player);
         if (packet == null)
             return;
 
@@ -123,7 +140,7 @@ public class PlayerListeners implements Listener {
                             .replace("%name%", controller.name)));
         }
 
-        PlayerInfoHolder.getPlayerInfos().remove(player.getUniqueId());
+        PlayerInfoHolder.clean(player);
     }
 
     @EventHandler

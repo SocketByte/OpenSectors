@@ -88,7 +88,7 @@ public class PlayerMoveListener implements Listener {
 
             packet.setPlayerInfo(packetPlayerInfo);
 
-            NetworkManager.sendTCP(packet);
+            NetworkManager.sendTCPSync(packet);
 
             Bukkit.getScheduler().runTaskLater(OpenSectorLinker.getInstance(),
                     () -> PlayerTransferHolder.getTransfering().remove(player.getUniqueId()), 10);

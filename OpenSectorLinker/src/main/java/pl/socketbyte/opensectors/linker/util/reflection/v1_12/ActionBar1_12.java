@@ -9,8 +9,9 @@ import pl.socketbyte.opensectors.linker.util.reflection.Reflection;
 import java.lang.reflect.InvocationTargetException;
 
 public class ActionBar1_12 implements ActionBar {
+
     private static final Class<?> CHAT_MESSAGE_TYPE =
-           Reflection.getCraftClass("ChatMessageType");
+            Reflection.getCraftClass("ChatMessageType");
     private static final Class<?> ICHAT_BASE_COMPONENT =
             Reflection.getCraftClass("IChatBaseComponent");
     private static final Class<?> CHAT_COMPONENT_TEXT =

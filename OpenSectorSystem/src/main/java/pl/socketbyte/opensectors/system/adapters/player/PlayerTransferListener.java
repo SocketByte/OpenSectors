@@ -2,6 +2,7 @@ package pl.socketbyte.opensectors.system.adapters.player;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import pl.socketbyte.opensectors.system.OpenSectorSystem;
 import pl.socketbyte.opensectors.system.api.LinkerConnection;
 import pl.socketbyte.opensectors.system.api.LinkerStorage;
@@ -9,6 +10,7 @@ import pl.socketbyte.opensectors.system.packet.PacketPlayerInfo;
 import pl.socketbyte.opensectors.system.packet.PacketPlayerTransfer;
 import pl.socketbyte.opensectors.system.util.NetworkManager;
 import pl.socketbyte.opensectors.system.util.ServerManager;
+import pl.socketbyte.opensectors.system.util.Util;
 
 import java.util.UUID;
 
@@ -32,6 +34,9 @@ public class PlayerTransferListener extends Listener {
             OpenSectorSystem.log().warning("Linker with id " + id + " is not connected or it is not responding!");
             return;
         }
+        ProxiedPlayer player = Util.getPlayer(UUID.fromString(packet.getPlayerUniqueId()));
+        if (player == null || !player.isConnected())
+            return;
         NetworkManager.sendTCP(linkerConnection.getConnection(), packetPlayerInfo);
         ServerManager.transfer(uniqueId, id);
     }
