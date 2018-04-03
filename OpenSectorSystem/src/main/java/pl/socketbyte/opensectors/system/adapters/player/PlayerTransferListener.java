@@ -13,6 +13,10 @@ import pl.socketbyte.opensectors.system.util.ServerManager;
 import pl.socketbyte.opensectors.system.util.Util;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
+import java.util.function.BiConsumer;
 
 public class PlayerTransferListener extends Listener {
 
@@ -37,8 +41,16 @@ public class PlayerTransferListener extends Listener {
         ProxiedPlayer player = Util.getPlayer(UUID.fromString(packet.getPlayerUniqueId()));
         if (player == null || !player.isConnected())
             return;
-        NetworkManager.sendTCP(linkerConnection.getConnection(), packetPlayerInfo);
         ServerManager.transfer(uniqueId, id);
+
+        try {
+            // To ensure that player is actually being transfered
+            // That actually helps a little with the packet response time
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        NetworkManager.sendTCP(linkerConnection.getConnection(), packetPlayerInfo);
     }
 
 }
