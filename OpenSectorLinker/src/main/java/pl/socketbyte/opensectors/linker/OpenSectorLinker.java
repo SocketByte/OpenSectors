@@ -73,6 +73,10 @@ public class OpenSectorLinker extends JavaPlugin {
         return null;
     }
 
+    public static ServerController getCurrentServer() {
+        return getServerController(getServerId());
+    }
+
     public static Logger log() {
         return getInstance().getLogger();
     }
@@ -237,7 +241,7 @@ public class OpenSectorLinker extends JavaPlugin {
         World world = Bukkit.getWorlds().get(0);
 
         WorldBorder worldBorder = world.getWorldBorder();
-        worldBorder.setSize((config.border - 25) * 2); // im genius XD
+        worldBorder.setSize(config.border * 2);
         worldBorder.setCenter(0, 0);
         log().info("Ready!");
 

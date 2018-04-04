@@ -3,6 +3,7 @@ package pl.socketbyte.opensectors.system.json.controllers;
 public class ServerController {
 
     public int id;
+    public int offset;
     public int port;
     public String name;
     public int minX;
@@ -14,6 +15,7 @@ public class ServerController {
     public String toString() {
         return "ServerController{" +
                 "id=" + id +
+                ", offset=" + offset +
                 ", port=" + port +
                 ", name='" + name + '\'' +
                 ", minX=" + minX +

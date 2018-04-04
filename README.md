@@ -129,6 +129,7 @@ ANY of location scaling systems or similar currently.
   "serverControllers": [
     {
       "id": 0,
+      "offset": 0,
       "port": 25566,
       "name": "center",
       "minX": -250.0,
@@ -138,6 +139,7 @@ ANY of location scaling systems or similar currently.
     },
     {
       "id": 1,
+      "offset": 2,
       "port": 25567,
       "name": "n",
       "minX": -250.0,
@@ -147,6 +149,7 @@ ANY of location scaling systems or similar currently.
     },
     {
       "id": 2,
+      "offset": 3,
       "port": 25568,
       "name": "s",
       "minX": -2000.0,
@@ -156,8 +159,9 @@ ANY of location scaling systems or similar currently.
     },
     {
       "id": 3,
+      "offset": 4,
       "port": 25569,
-      "name": "w",
+      "name": "e",
       "minX": 250.0,
       "minZ": -250.0,
       "maxX": 2000.0,
@@ -165,8 +169,9 @@ ANY of location scaling systems or similar currently.
     },
     {
       "id": 4,
+      "offset": 5,
       "port": 25570,
-      "name": "e",
+      "name": "w",
       "minX": -2000.0,
       "minZ": -2000.0,
       "maxX": -250.0,

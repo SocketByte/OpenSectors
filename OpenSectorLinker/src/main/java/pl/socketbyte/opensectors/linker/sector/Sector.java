@@ -4,12 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.util.Vector;
+import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 
 public class Sector {
 
     private final ServerController serverController;
     private World world;
+
+    private int offset;
 
     private int minX;
     private int minZ;
@@ -19,12 +22,13 @@ public class Sector {
     private Location lower;
     private Location upper;
 
-    public Sector(ServerController serverController, int minX, int minZ, int maxX, int maxZ) {
+    public Sector(ServerController serverController, int minX, int minZ, int maxX, int maxZ, int offset) {
         this.world = Bukkit.getWorlds().get(0);
-        this.minX = minX;
-        this.minZ = minZ;
-        this.maxX = maxX;
-        this.maxZ = maxZ;
+        this.minX = minX - offset;
+        this.minZ = minZ - offset;
+        this.maxX = maxX - offset;
+        this.maxZ = maxZ - offset;
+        this.offset = offset;
         this.serverController = serverController;
         setPositions();
     }
@@ -56,7 +60,8 @@ public class Sector {
         double distSouth = Math.abs(maxZ - z);
         double distX = (distWest < distEast) ? distWest : distEast;
         double distZ = (distNorth < distSouth) ? distNorth : distSouth;
-        return distX > distZ ? distZ : distX;
+        double distance = distX > distZ ? distZ : distX;
+        return distance + OpenSectorLinker.getCurrentServer().offset;
     }
 
     public boolean isIn(Location location) {

@@ -75,9 +75,6 @@ public class PlayerMoveListener implements Listener {
         ServerController current = SectorManager.INSTANCE.getSectorMap()
                 .get(OpenSectorLinker.getServerId())
                 .getServerController();
-        //int[] destination = Util.getDestinationWithOffset(current,
-        //        to.getServerController(), x, z);
-        //System.out.println((destination[0] - x) + ", " + (destination[1] - z));
 
         PlayerTransferHolder.getTransfering().add(player.getUniqueId());
 

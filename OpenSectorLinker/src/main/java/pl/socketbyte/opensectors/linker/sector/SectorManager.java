@@ -65,9 +65,9 @@ public enum SectorManager {
 
         for (int i = 0; i < sectors; i++) {
             ServerController controller = controllers[i];
-            int id = controller.id * 2;
-            Sector sector = new Sector(controller, controller.minX - id, controller.minZ - id,
-                    controller.maxX - id, controller.maxZ - id);
+            int offset = controller.offset;
+            Sector sector = new Sector(controller, controller.minX, controller.minZ,
+                    controller.maxX, controller.maxZ, offset);
 
             sectorMap.put(controller.id, sector);
         }

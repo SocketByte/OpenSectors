@@ -22,10 +22,7 @@ import pl.socketbyte.opensectors.linker.packet.PacketPlayerInfo;
 import pl.socketbyte.opensectors.linker.packet.PacketPlayerTransfer;
 import pl.socketbyte.opensectors.linker.packet.PacketUpdatePlayerSession;
 import pl.socketbyte.opensectors.linker.packet.serializable.SerializablePotionEffect;
-import pl.socketbyte.opensectors.linker.util.NetworkManager;
-import pl.socketbyte.opensectors.linker.util.PlayerInfoHolder;
-import pl.socketbyte.opensectors.linker.util.Serializer;
-import pl.socketbyte.opensectors.linker.util.Util;
+import pl.socketbyte.opensectors.linker.util.*;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -105,10 +102,9 @@ public class PlayerListeners implements Listener {
             StackTraceHandler.handle(OpenSectorLinker.class, e, StackTraceSeverity.ERROR);
         }
         SerializablePotionEffect[] potionEffects = packet.getPotionEffects();
-        Location destination = new Location(player.getWorld(), packet.getX(), packet.getY(), packet.getZ(),
-                packet.getYaw(), packet.getPitch());
-        Location valid = Util.getValidLocation(destination, packet.getY());
-        player.teleport(valid);
+
+        SafeTeleport safeTeleport = new SafeTeleport(player);
+        safeTeleport.teleport(packet.getX(), packet.getZ(), packet.getY(), packet.getYaw(), packet.getPitch());
 
         for (PotionEffect effect : player.getActivePotionEffects())
             player.removePotionEffect(effect.getType());
