@@ -40,8 +40,8 @@
 
     <repositories>
         <repository>
-            <id>bungeecord-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -64,9 +64,9 @@
             <version>2.8.2</version>
         </dependency>
         <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-            <version>1.12-SNAPSHOT</version>
+            <groupId>com.github.SpigotMC</groupId>
+            <artifactId>BungeeCord</artifactId>
+            <version>master-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

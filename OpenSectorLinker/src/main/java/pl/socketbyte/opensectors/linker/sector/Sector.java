@@ -1,36 +1,39 @@
 package pl.socketbyte.opensectors.linker.sector;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.util.Vector;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 
 public class Sector {
 
     private final ServerController serverController;
+    private World world;
 
-    private Location center;
-    private int size;
+    private int minX;
+    private int minZ;
+    private int maxX;
+    private int maxZ;
 
     private Location lower;
     private Location upper;
 
-    public Sector(ServerController serverController, Location center, int size) {
-        this.center = center;
-        this.size = size;
+    public Sector(ServerController serverController, int minX, int minZ, int maxX, int maxZ) {
+        this.world = Bukkit.getWorlds().get(0);
+        this.minX = minX;
+        this.minZ = minZ;
+        this.maxX = maxX;
+        this.maxZ = maxZ;
         this.serverController = serverController;
         setPositions();
     }
 
     public void setPositions() {
-        Vector low = new Vector(center.getBlockX() - this.size, 0, center.getBlockZ() - this.size);
-        Vector up = new Vector(center.getBlockX() + this.size, 256, center.getBlockZ() + this.size);
-        this.lower = low.toLocation(center.getWorld());
-        this.upper = up.toLocation(center.getWorld());
-    }
-
-    public boolean isAtEdge(Location location) {
-        return !isIn(location) && isNear(location)
-                && (howClose(location) < 2);
+        Vector low = new Vector(minX, 0, minZ);
+        Vector up = new Vector(maxX, 256, maxZ);
+        this.lower = low.toLocation(world);
+        this.upper = up.toLocation(world);
     }
 
     public boolean isNear(Location location) {
@@ -41,29 +44,22 @@ public class Sector {
         return !isIn(location) && howClose(location) <= additional;
     }
 
-    public double howCloseCenter(Location location) {
-        if (isIn(location))
-            return Double.MAX_VALUE;
-        return getCenter().distance(location);
-    }
-
     public double howClose(Location location) {
         if (isIn(location))
             return Double.MAX_VALUE;
 
         double x = location.getX();
         double z = location.getZ();
-        double distWest = Math.abs((center.getBlockX() + this.size) - x);
-        double distEast = Math.abs((center.getBlockX() - this.size) - x);
-        double distNorth = Math.abs((center.getBlockZ() - this.size) - z);
-        double distSouth = Math.abs((center.getBlockZ() + this.size) - z);
+        double distWest = Math.abs(minX - x);
+        double distEast = Math.abs(maxX - x);
+        double distNorth = Math.abs(minZ - z);
+        double distSouth = Math.abs(maxZ - z);
         double distX = (distWest < distEast) ? distWest : distEast;
         double distZ = (distNorth < distSouth) ? distNorth : distSouth;
         return distX > distZ ? distZ : distX;
     }
 
     public boolean isIn(Location location) {
-        setPositions();
         return !(this.lower == null || this.upper == null || location == null)
                 && (location.getBlockX() > this.lower.getBlockX())
                 && (location.getBlockX() < this.upper.getBlockX())
@@ -73,26 +69,8 @@ public class Sector {
                 && (location.getBlockZ() < this.upper.getBlockZ());
     }
 
-    public void setSize(int size) {
-        this.size = size;
-        this.setPositions();
-    }
-
-    public void setCenter(Location center) {
-        this.center = center;
-        this.setPositions();
-    }
-
     public ServerController getServerController() {
         return serverController;
-    }
-
-    public Location getCenter() {
-        return center;
-    }
-
-    public int getSize() {
-        return size;
     }
 
     public Location getLower() {
@@ -115,8 +93,10 @@ public class Sector {
     public String toString() {
         return "Sector{" +
                 "serverController=" + serverController +
-                ", center=" + center +
-                ", size=" + size +
+                ", minX=" + minX +
+                ", minZ=" + minZ +
+                ", maxX=" + maxX +
+                ", maxZ=" + maxZ +
                 ", lower=" + lower +
                 ", upper=" + upper +
                 '}';

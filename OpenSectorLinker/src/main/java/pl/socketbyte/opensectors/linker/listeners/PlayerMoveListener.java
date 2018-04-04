@@ -52,46 +52,46 @@ public class PlayerMoveListener implements Listener {
             Location from = event.getFrom();
             Location to = event.getTo();
 
-            Sector sector = SectorManager.INSTANCE.getNear(to);
-            Sector in = SectorManager.INSTANCE.getAt(to);
-            if (sector == null || in == null)
+            double howClose = SectorManager.INSTANCE.howClose(to);
+            if (howClose == Double.MAX_VALUE) // No sectors close
                 return;
 
-            double howClose = sector.howClose(to);
+            ProtocolManager.getActionBar().send(player, OpenSectorLinker.getInstance().getConfig().getString("sector-border-close")
+                    .replace("%distance%", df.format(howClose).replace(",", ".")));
 
-            if (SectorManager.INSTANCE.isNear(to)) {
-                ProtocolManager.getActionBar().send(player, OpenSectorLinker.getInstance().getConfig().getString("sector-border-close")
-                        .replace("%distance%", df.format(howClose).replace(",", "."))
-                        .replace("%sector%", sector.getServerController().name));
-            }
-
-            if (in.getServerController().id == OpenSectorLinker.getServerId())
+            Sector in = SectorManager.INSTANCE.getAt(to);
+            if (in == null)
                 return;
 
             if (PlayerTransferHolder.getTransfering().contains(player.getUniqueId()))
                 return;
 
-            int x = player.getLocation().getBlockX(), z = player.getLocation().getBlockZ();
-            ServerController current = SectorManager.INSTANCE.getSectorMap()
-                    .get(OpenSectorLinker.getServerId())
-                    .getServerController();
-            int[] destination = Util.getDestinationWithOffset(current,
-                    in.getServerController(), x, z);
-
-            PlayerTransferHolder.getTransfering().add(player.getUniqueId());
-
-            PacketPlayerTransfer packet = new PacketPlayerTransfer();
-            packet.setPlayerUniqueId(player.getUniqueId().toString());
-            packet.setServerId(in.getServerController().id);
-
-            PacketPlayerInfo packetPlayerInfo = new PacketPlayerInfo(player, destination[0], destination[1]);
-
-            packet.setPlayerInfo(packetPlayerInfo);
-
-            NetworkManager.sendTCPSync(packet);
-
-            Bukkit.getScheduler().runTaskLater(OpenSectorLinker.getInstance(),
-                    () -> PlayerTransferHolder.getTransfering().remove(player.getUniqueId()), 10);
+            sendTransferRequest(player, in);
         });
+    }
+
+    private void sendTransferRequest(Player player, Sector to) {
+        int x = player.getLocation().getBlockX(), z = player.getLocation().getBlockZ();
+        ServerController current = SectorManager.INSTANCE.getSectorMap()
+                .get(OpenSectorLinker.getServerId())
+                .getServerController();
+        //int[] destination = Util.getDestinationWithOffset(current,
+        //        to.getServerController(), x, z);
+        //System.out.println((destination[0] - x) + ", " + (destination[1] - z));
+
+        PlayerTransferHolder.getTransfering().add(player.getUniqueId());
+
+        PacketPlayerTransfer packet = new PacketPlayerTransfer();
+        packet.setPlayerUniqueId(player.getUniqueId().toString());
+        packet.setServerId(to.getServerController().id);
+
+        PacketPlayerInfo packetPlayerInfo = new PacketPlayerInfo(player, x, z);
+
+        packet.setPlayerInfo(packetPlayerInfo);
+
+        NetworkManager.sendTCPSync(packet);
+
+        Bukkit.getScheduler().runTaskLater(OpenSectorLinker.getInstance(),
+                () -> PlayerTransferHolder.getTransfering().remove(player.getUniqueId()), 10);
     }
 }

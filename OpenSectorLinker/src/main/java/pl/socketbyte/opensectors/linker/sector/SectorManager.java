@@ -18,9 +18,18 @@ public enum SectorManager {
         return sectorMap;
     }
 
+
+    public double howClose(Location location) {
+        for (Sector sector : sectorMap.values())
+            if (sector.isNear(location))
+                return sector.howClose(location);
+        return Double.MAX_VALUE;
+    }
+
     public boolean isIn(Location loc) {
         for (Sector sector : sectorMap.values())
-            if (sector.isIn(loc))
+            if (sector.isIn(loc)
+                    && sector.getServerController().id != OpenSectorLinker.getServerId())
                 return true;
         return false;
     }
@@ -41,23 +50,10 @@ public enum SectorManager {
         return false;
     }
 
-    public Sector getNear(Location location) {
-        Map<Sector, Double> sectors = new HashMap<>();
-        for (Sector sector : sectorMap.values()) {
-            sectors.put(sector, sector.howCloseCenter(location));
-        }
-        Map.Entry<Sector, Double> min = null;
-        for (Map.Entry<Sector, Double> entry : sectors.entrySet())
-            if (min == null || min.getValue() > entry.getValue())
-                min = entry;
-        if (min == null)
-            return null;
-        return min.getKey();
-    }
-
     public Sector getAt(Location loc) {
         for (Sector sector : sectorMap.values())
-            if (sector.isIn(loc))
+            if (sector.isIn(loc)
+                    && sector.getServerController().id != OpenSectorLinker.getServerId())
                 return sector;
         return null;
     }
@@ -65,15 +61,13 @@ public enum SectorManager {
     public void load() {
         JSONConfig jsonConfig = OpenSectorLinker.getConfiguration();
         ServerController[] controllers = jsonConfig.serverControllers;
-        int size = jsonConfig.sectorSize;
         int sectors = jsonConfig.sectors;
 
         for (int i = 0; i < sectors; i++) {
             ServerController controller = controllers[i];
-
-            Location center = new Location(Bukkit.getWorlds().get(0),
-                    controller.x, 0, controller.z);
-            Sector sector = new Sector(controller, center, size);
+            int id = controller.id * 2;
+            Sector sector = new Sector(controller, controller.minX - id, controller.minZ - id,
+                    controller.maxX - id, controller.maxZ - id);
 
             sectorMap.put(controller.id, sector);
         }

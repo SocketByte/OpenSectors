@@ -23,6 +23,7 @@ import pl.socketbyte.opensectors.system.adapters.query.QueryExecuteListener;
 import pl.socketbyte.opensectors.system.adapters.query.QueryListener;
 import pl.socketbyte.opensectors.system.adapters.tool.ItemTransferListener;
 import pl.socketbyte.opensectors.system.adapters.tool.SendMessageListener;
+import pl.socketbyte.opensectors.system.netty.PostLoginListener;
 import pl.socketbyte.opensectors.system.packet.serializable.*;
 import pl.socketbyte.opensectors.system.packet.types.MessageType;
 import pl.socketbyte.opensectors.system.packet.types.Receiver;
@@ -215,6 +216,8 @@ public class OpenSectorSystem extends Plugin {
         logger.info("Registering event adapter...");
         ProxyServer.getInstance().getPluginManager()
                 .registerListener(this, new EventAdapter());
+        ProxyServer.getInstance().getPluginManager()
+                .registerListener(this, new PostLoginListener());
 
         logger.info("Running schedulers...");
         TaskManager.getExecutor().scheduleAtFixedRate(
