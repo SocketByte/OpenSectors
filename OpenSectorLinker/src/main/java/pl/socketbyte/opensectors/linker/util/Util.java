@@ -48,15 +48,14 @@ public class Util {
     }
 
     public static int[] getDestinationWithOffset(ServerController current, ServerController next, int x, int z) {
-        int distWest = Math.abs((next.x + 1) - current.x);
-        int distEast = Math.abs((next.x - 1) - current.x);
-        int distNorth = Math.abs((next.z - 1) - current.z);
-        int distSouth = Math.abs((next.z + 1) - current.z);
+        int distWest = Math.abs((next.maxX) - current.maxX);
+        int distEast = Math.abs((next.minX) - current.minX);
+        int distNorth = Math.abs((next.minZ) - current.minZ);
+        int distSouth = Math.abs((next.maxZ) - current.maxZ);
         int dirX = (distWest < distEast) ? -8 : 8;
-        int dirZ = (distNorth < distSouth) ? 8 : -8;
+        int dirZ = (distNorth < distSouth) ? -8 : 8;
         int distX = (distWest < distEast) ? distWest : distEast;
         int distZ = (distNorth < distSouth) ? distNorth : distSouth;
         return distX < distZ ? new int[] { x, z + dirZ } : new int[] { x + dirX, z };
     }
-
 }

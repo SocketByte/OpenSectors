@@ -5,8 +5,10 @@ public class ServerController {
     public int id;
     public int port;
     public String name;
-    public int x; // center x
-    public int z; // center z
+    public int minX;
+    public int minZ;
+    public int maxX;
+    public int maxZ;
 
     @Override
     public String toString() {
@@ -14,8 +16,10 @@ public class ServerController {
                 "id=" + id +
                 ", port=" + port +
                 ", name='" + name + '\'' +
-                ", x=" + x +
-                ", z=" + z +
+                ", minX=" + minX +
+                ", minZ=" + minZ +
+                ", maxX=" + maxX +
+                ", maxZ=" + maxZ +
                 '}';
     }
 }
