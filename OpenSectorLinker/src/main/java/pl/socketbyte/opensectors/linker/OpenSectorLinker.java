@@ -46,9 +46,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class OpenSectorLinker extends JavaPlugin {
-
-    public static final String VERSION = "1.3";
-
+    
     private static Client client;
     private static OpenSectorLinker instance;
     private static JSONConfig config;

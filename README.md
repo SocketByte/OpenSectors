@@ -1,4 +1,4 @@
-# OpenSectors ![version](https://img.shields.io/badge/version-1.3-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
+# OpenSectors ![version](https://img.shields.io/badge/version-1.4-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
 Join our Discord server! 
 
 [![https://discord.gg/GtnYegP](https://i.imgur.com/ZEzqv2h.png)](https://discord.gg/GtnYegP)
@@ -203,22 +203,6 @@ servers:
     motd: East Sector
     address: localhost:25570
     restricted: false
-  nw:
-    motd: North-West Sector
-    address: localhost:25571
-    restricted: false
-  ne:
-    motd: North-East Sector
-    address: localhost:25572
-    restricted: false
-  sw:
-    motd: South-West Sector
-    address: localhost:25573
-    restricted: false
-  se:
-    motd: South-East Sector
-    address: localhost:25574
-    restricted: false
 ```
 ## API
 Yes, that's what you wanted, don't ya? :D
@@ -261,7 +245,7 @@ or this code when you make plugin for system:
         <dependency>
             <groupId>pl.socketbyte</groupId>
             <artifactId>OpenSectorSystem</artifactId>
-            <version>1.2</version>
+            <version>1.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
