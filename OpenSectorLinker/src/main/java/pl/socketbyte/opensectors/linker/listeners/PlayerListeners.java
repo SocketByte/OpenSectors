@@ -2,9 +2,6 @@ package pl.socketbyte.opensectors.linker.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +11,6 @@ import org.bukkit.potion.PotionEffectType;
 import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import pl.socketbyte.opensectors.linker.adapters.player.PlayerTeleportListener;
 import pl.socketbyte.opensectors.linker.api.callback.CallbackWaiter;
-import pl.socketbyte.opensectors.linker.api.callback.ParametrizedCallback;
 import pl.socketbyte.opensectors.linker.json.controllers.ServerController;
 import pl.socketbyte.opensectors.linker.logging.StackTraceHandler;
 import pl.socketbyte.opensectors.linker.logging.StackTraceSeverity;
@@ -79,6 +75,8 @@ public class PlayerListeners implements Listener {
         PlayerTeleportListener.complete(player);
 
         event.setJoinMessage(null);
+
+        // PlayerBorderContainer.pull(player);
 
         PacketPlayerInfo packet = PlayerInfoHolder.pull(player);
         if (packet == null)

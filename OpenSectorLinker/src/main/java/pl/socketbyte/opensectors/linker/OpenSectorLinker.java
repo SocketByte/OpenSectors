@@ -237,14 +237,6 @@ public class OpenSectorLinker extends JavaPlugin {
         log().info("Loading sectors...");
         SectorManager.INSTANCE.load();
 
-        log().info("Applying world border...");
-        World world = Bukkit.getWorlds().get(0);
-
-        WorldBorder worldBorder = world.getWorldBorder();
-        worldBorder.setSize(config.border * 2);
-        worldBorder.setCenter(0, 0);
-        log().info("Ready!");
-
         log().info("Running metrics...");
         Metrics metrics = new Metrics(OpenSectorLinker.getInstance());
     }

@@ -2,7 +2,6 @@ package pl.socketbyte.opensectors.linker.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +13,8 @@ import pl.socketbyte.opensectors.linker.packet.PacketPlayerInfo;
 import pl.socketbyte.opensectors.linker.packet.PacketPlayerTransfer;
 import pl.socketbyte.opensectors.linker.sector.Sector;
 import pl.socketbyte.opensectors.linker.sector.SectorManager;
-import pl.socketbyte.opensectors.linker.util.*;
+import pl.socketbyte.opensectors.linker.util.NetworkManager;
+import pl.socketbyte.opensectors.linker.util.PlayerTransferHolder;
 import pl.socketbyte.opensectors.linker.util.reflection.ProtocolManager;
 
 import java.text.DecimalFormat;

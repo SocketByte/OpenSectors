@@ -34,6 +34,14 @@ public enum SectorManager {
         return false;
     }
 
+    public boolean isIn(int x, int z) {
+        for (Sector sector : sectorMap.values())
+            if (sector.isIn(x, z)
+                    && sector.getServerController().id != OpenSectorLinker.getServerId())
+                return true;
+        return false;
+    }
+
     public boolean isNear(Location location) {
         for (Sector sector : sectorMap.values()) {
             if (sector.isNear(location))

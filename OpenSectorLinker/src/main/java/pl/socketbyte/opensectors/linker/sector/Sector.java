@@ -74,6 +74,10 @@ public class Sector {
                 && (location.getBlockZ() < this.upper.getBlockZ());
     }
 
+    public boolean isIn(int x, int z) {
+        return isIn(new Location(world, x, 100, z));
+    }
+
     public ServerController getServerController() {
         return serverController;
     }
