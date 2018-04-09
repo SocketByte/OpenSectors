@@ -19,7 +19,7 @@ public class StackTraceHandler {
         System.out.println("[------------- Detailed stacktrace -------------]");
         e.printStackTrace();
         System.out.println("[------------- End of detailed stacktrace -------------]");
-        System.out.println("OpenSectorLinker version: " + OpenSectorLinker.VERSION);
+        System.out.println("OpenSectorLinker version: " + OpenSectorLinker.getInstance().getDescription().getVersion());
         System.out.println("[------------- End of error -------------]");
     }
 
@@ -32,7 +32,7 @@ public class StackTraceHandler {
                 : message));
         System.out.println("  Error class: " + clazz.getName() + " (@i: " + Arrays.toString(clazz.getAnnotations()) + ")");
         System.out.println();
-        System.out.println("OpenSectorLinker version: " + OpenSectorLinker.VERSION);
+        System.out.println("OpenSectorLinker version: " + OpenSectorLinker.getInstance().getDescription().getVersion());
         System.out.println("[------------- End of error -------------]");
     }
 

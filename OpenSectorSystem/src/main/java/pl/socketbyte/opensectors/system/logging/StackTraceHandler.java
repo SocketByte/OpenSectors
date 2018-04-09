@@ -19,7 +19,7 @@ public class StackTraceHandler {
         System.out.println("[------------- Detailed stacktrace -------------]");
         e.printStackTrace();
         System.out.println("[------------- End of detailed stacktrace -------------]");
-        System.out.println("OpenSectorSystem version: " + OpenSectorSystem.VERSION);
+        System.out.println("OpenSectorSystem version: " + OpenSectorSystem.getInstance().getDescription().getVersion());
         System.out.println("[------------- End of error -------------]");
     }
 
