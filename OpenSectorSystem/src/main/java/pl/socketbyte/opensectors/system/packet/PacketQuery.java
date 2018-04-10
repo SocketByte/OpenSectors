@@ -1,11 +1,12 @@
 package pl.socketbyte.opensectors.system.packet;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class PacketQuery extends Packet {
 
     private String query;
-    private Map<Integer, Object> replacements;
+    private Map<Integer, Object> replacements = new LinkedHashMap<>();
 
     public PacketQuery() {
 
@@ -23,8 +24,8 @@ public class PacketQuery extends Packet {
         return replacements;
     }
 
-    public void setReplacements(Map<Integer, Object> replacements) {
-        this.replacements = replacements;
+    public void addReplacement(int index, Object object) {
+        this.replacements.put(index, object);
     }
 
     @Override

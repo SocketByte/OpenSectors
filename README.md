@@ -329,13 +329,11 @@ query.setQuery("INSERT INTO something VALUES(?, ?)");
 ```
 ...set replacements...
 ```java
-Map<Integer, Object> replacements = new HashMap<>();
-replacements.put(1, "a nice value");
-replacements.put(2, "even nicer value");
+query.addReplacement(1, "a nice value");
+query.addReplacement(2, "even nicer value");
 ```
-... and apply & send them!
+... and send them!
 ```java
-query.setReplacements(replacements);
 SectorAPI.sendTCP(query);
 ```
 Congratulations, you executed a query on the system side
