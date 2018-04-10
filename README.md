@@ -18,7 +18,7 @@ bad to it, can't do it!
 
 This presentation will be quite long, so here you have quick links to everything.
 - [Features](#features)
-- [Future of the project](#recent-todo)
+- [Future of the project](#upcoming-features)
 - [How it works?](#how-it-works--installation)
 - [Do I need redis?](#do-i-need-redis-or-something-similar)
 - [How do I use it?](#how-do-i-use-it-with-my-other-plugins)
@@ -40,13 +40,12 @@ This presentation will be quite long, so here you have quick links to everything
 * Built-in fast MySQL connection and API (using HikariCP)
 * Possibilities
 
-## Recent TODO
-- Ability to change sector shape and dimensions
+## Upcoming features
 - Create a border (from MC1.8) on each sector
-- Repair `PacketPlayerTeleport` (better player info handling)
 - More informations in `PacketPlayerInfo`
 - More default packets to use
 - Multiple center sectors to improve performance (sector channel system)
+- Better time/weather system
 
 ## How it works / installation?
 The project actually contains two projects - linker and system.
