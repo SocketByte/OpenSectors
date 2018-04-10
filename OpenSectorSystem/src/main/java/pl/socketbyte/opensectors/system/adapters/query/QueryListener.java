@@ -6,6 +6,7 @@ import net.md_5.bungee.api.ProxyServer;
 import pl.socketbyte.opensectors.system.Database;
 import pl.socketbyte.opensectors.system.OpenSectorSystem;
 import pl.socketbyte.opensectors.system.packet.PacketQuery;
+import pl.socketbyte.opensectors.system.packet.PacketQueryExecute;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -16,7 +17,8 @@ public class QueryListener extends Listener{
     public void received(Connection connection, Object object) {
         super.received(connection, object);
 
-        if (!(object instanceof PacketQuery))
+        if (!(object instanceof PacketQuery
+                && (!(object instanceof PacketQueryExecute))))
             return;
 
         PacketQuery packet = (PacketQuery) object;
