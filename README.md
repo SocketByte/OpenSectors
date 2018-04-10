@@ -345,11 +345,7 @@ Make an execute query
 ```java
 PacketQueryExecute queryExecute = new PacketQueryExecute();
 queryExecute.setQuery("SELECT * FROM something WHERE fancier=?");
-
-replacements = new HashMap<>();
-replacements.put(1, "even nicer value");
-
-queryExecute.setReplacements(replacements);
+queryExecute.addReplacement(1, "even nicer value");
 ```
 ... and!
 ```java
