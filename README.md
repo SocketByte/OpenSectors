@@ -261,7 +261,7 @@ You can register your own `Packet` extended classes easily,
 and send them over the network (and/or catch them in the listener)
 It is fairly easy, look;
 ```java
-PacketExtender packetExtender = SectorAPI.createPacketExtender(PacketExampleTest.class);
+PacketExtender<PacketExampleTest> packetExtender = SectorAPI.createPacketExtender(PacketExampleTest.class);
 packetExtender.setPacketAdapter((connection, packet) ->
         System.out.println("Received PacketExampleTest from the proxy server."));
 ```

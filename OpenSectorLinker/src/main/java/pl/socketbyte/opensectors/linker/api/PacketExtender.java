@@ -5,7 +5,7 @@ import pl.socketbyte.opensectors.linker.OpenSectorLinker;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PacketExtender {
+public class PacketExtender<V> {
 
     private static List<PacketExtender> packetExtenders = new ArrayList<>();
 
@@ -17,14 +17,14 @@ public class PacketExtender {
         return packetExtenders;
     }
 
-    private Class packet;
-    private IPacketAdapter packetAdapter;
+    private Class<? extends V> packet;
+    private IPacketAdapter<V> packetAdapter;
 
     public PacketExtender() {
 
     }
 
-    public PacketExtender(Class packet) {
+    public PacketExtender(Class<? extends V> packet) {
         this.packet = packet;
     }
 
@@ -32,7 +32,7 @@ public class PacketExtender {
         return packet;
     }
 
-    public void setPacket(Class packet) {
+    public void setPacket(Class<? extends V> packet) {
         this.packet = packet;
     }
 
@@ -50,7 +50,7 @@ public class PacketExtender {
         return packetAdapter;
     }
 
-    public void setPacketAdapter(IPacketAdapter packetAdapter) {
+    public void setPacketAdapter(IPacketAdapter<V> packetAdapter) {
         this.packetAdapter = packetAdapter;
     }
 }

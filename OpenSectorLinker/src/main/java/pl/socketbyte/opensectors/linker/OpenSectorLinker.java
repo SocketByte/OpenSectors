@@ -2,6 +2,7 @@ package pl.socketbyte.opensectors.linker;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.minlog.Log;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -17,6 +18,8 @@ import pl.socketbyte.opensectors.linker.adapters.sync.TimeInfoListener;
 import pl.socketbyte.opensectors.linker.adapters.sync.WeatherInfoListener;
 import pl.socketbyte.opensectors.linker.adapters.tool.ItemTransferListener;
 import pl.socketbyte.opensectors.linker.api.IPacketAdapter;
+import pl.socketbyte.opensectors.linker.api.PacketExtender;
+import pl.socketbyte.opensectors.linker.api.SectorAPI;
 import pl.socketbyte.opensectors.linker.api.synchronizable.Synchronizable;
 import pl.socketbyte.opensectors.linker.api.synchronizable.SynchronizedList;
 import pl.socketbyte.opensectors.linker.api.synchronizable.SynchronizedMap;

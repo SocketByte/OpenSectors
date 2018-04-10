@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * This API is targeted towards beginner users unfamiliar with any technology presented here.
  * It limits Kryo or Kryonet usage as much as possible to make simple, fun coding experience for new programmers.
  */
+@SuppressWarnings("unchecked")
 public class SectorAPI {
 
     /**
@@ -40,7 +41,7 @@ public class SectorAPI {
      * @param packet Class which will be further sent through proxy and linkers
      * @return PacketExtender class
      */
-    public static PacketExtender createPacketExtender(Class packet) {
+    public static <V> PacketExtender<V> createPacketExtender(Class<? extends V> packet) {
         return new PacketExtender(packet)
                 .register()
                 .add();
