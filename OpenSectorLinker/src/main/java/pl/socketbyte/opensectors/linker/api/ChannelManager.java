@@ -8,14 +8,14 @@ import java.util.Map;
 
 public class ChannelManager {
 
-    private static final Map<String, IPacketAdapter> channels = new HashMap<>();
+    private static final Map<String, IPacketAdapter<PacketCustomPayload>> channels = new HashMap<>();
 
-    public static Map<String, IPacketAdapter> getChannels() {
+    public static Map<String, IPacketAdapter<PacketCustomPayload>> getChannels() {
         return channels;
     }
 
     public static void execute(Connection connection, PacketCustomPayload packet) {
-        for (Map.Entry<String, IPacketAdapter> channel : channels.entrySet())
+        for (Map.Entry<String, IPacketAdapter<PacketCustomPayload>> channel : channels.entrySet())
             if (channel.getKey().equals(packet.getChannel()))
                 channel.getValue().received(connection, packet);
     }
