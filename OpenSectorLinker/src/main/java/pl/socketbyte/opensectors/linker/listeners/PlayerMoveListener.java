@@ -18,6 +18,7 @@ import pl.socketbyte.opensectors.linker.util.PlayerTransferHolder;
 import pl.socketbyte.opensectors.linker.util.reflection.ProtocolManager;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class PlayerMoveListener implements Listener {
 
@@ -56,7 +57,7 @@ public class PlayerMoveListener implements Listener {
             if (howClose == Double.MAX_VALUE) // No sectors close
                 return;
 
-            ProtocolManager.getActionBar().send(player, OpenSectorLinker.getInstance().getConfig().getString("sector-border-close")
+            Objects.requireNonNull(ProtocolManager.getActionBar()).send(player, OpenSectorLinker.getInstance().getConfig().getString("sector-border-close")
                     .replace("%distance%", df.format(howClose).replace(",", ".")));
 
             Sector in = SectorManager.INSTANCE.getAt(to);
