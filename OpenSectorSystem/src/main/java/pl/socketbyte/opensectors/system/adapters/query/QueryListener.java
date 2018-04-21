@@ -17,28 +17,27 @@ public class QueryListener extends Listener{
     public void received(Connection connection, Object object) {
         super.received(connection, object);
 
-        if (!(object instanceof PacketQuery
-                && (!(object instanceof PacketQueryExecute))))
-            return;
+        if (object instanceof PacketQuery
+                && (!(object instanceof PacketQueryExecute))) {
+            PacketQuery packet = (PacketQuery) object;
 
-        PacketQuery packet = (PacketQuery) object;
-
-        ProxyServer.getInstance().getScheduler().runAsync(OpenSectorSystem.getInstance(), () -> {
-            PreparedStatement statement = Database.executeUpdate(packet);
-            try {
-                statement.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            finally {
+            ProxyServer.getInstance().getScheduler().runAsync(OpenSectorSystem.getInstance(), () -> {
+                PreparedStatement statement = Database.executeUpdate(packet);
                 try {
-                    statement.close();
-                    statement.getConnection().close();
+                    statement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            }
-        });
+                finally {
+                    try {
+                        statement.close();
+                        statement.getConnection().close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
 }
