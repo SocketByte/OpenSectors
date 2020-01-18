@@ -1,7 +1,10 @@
 # OpenSectors ![version](https://img.shields.io/badge/version-1.4-blue.svg) [![Build Status](https://travis-ci.org/SocketByte/OpenSectors.svg?branch=master)](https://travis-ci.org/SocketByte/OpenSectors)
-Join our Discord server! 
 
-[![https://discord.gg/GtnYegP](https://i.imgur.com/ZEzqv2h.png)](https://discord.gg/GtnYegP)
+# This project is outdated! 
+## Please head to [MinecraftServerNetwork](https://github.com/SocketByte/MinecraftServerNetwork) for the updated and maintained version. 
+
+
+## Old documentation
 
 OpenSectors allows you to split your world into different servers
 using Kryonet and other networking solutions. This plugin splits your
