@@ -42,7 +42,7 @@ public class PlayerListeners implements Listener {
         PacketPlayerInfo playerInfo = new PacketPlayerInfo();
         playerInfo.setX(OpenSectorLinker.getInstance().getConfig().getInt("spawn.x"));
         playerInfo.setY(OpenSectorLinker.getInstance().getConfig().getInt("spawn.y"));
-        playerInfo.setY(OpenSectorLinker.getInstance().getConfig().getInt("spawn.z"));
+        playerInfo.setZ(OpenSectorLinker.getInstance().getConfig().getInt("spawn.z"));
         playerInfo.setHealth(20);
         playerInfo.setFood(20);
         playerInfo.setGameMode("SURVIVAL");
